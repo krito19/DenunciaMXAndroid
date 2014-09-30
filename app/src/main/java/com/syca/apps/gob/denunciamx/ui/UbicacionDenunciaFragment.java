@@ -1,13 +1,16 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.syca.apps.gob.denunciamx.R;
 
 /**
@@ -25,7 +28,8 @@ public class UbicacionDenunciaFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
+    static MapView mapView;
+    static GoogleMap map;
 
     /**
      * Use this factory method to create a new instance of
@@ -46,6 +50,7 @@ public class UbicacionDenunciaFragment extends Fragment {
     }
     public UbicacionDenunciaFragment() {
         // Required empty public constructor
+
     }
 
     @Override
@@ -55,14 +60,52 @@ public class UbicacionDenunciaFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setRetainInstance(true);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ubicacion_denuncia, container, false);
+
+        View v =inflater.inflate(R.layout.fragment_ubicacion_denuncia, container, false);
+
+
+        mapView = (MapView) v.findViewById(R.id.map);
+
+        mapView.onCreate(savedInstanceState);
+
+
+        // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
+        try {
+            MapsInitializer.initialize(this.getActivity());
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+        // Gets to GoogleMap from the MapView and does initialization stuff
+        map = mapView.getMap();
+
+
+        return v;
+
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
 
 }

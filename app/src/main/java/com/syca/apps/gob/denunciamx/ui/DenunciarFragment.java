@@ -45,7 +45,6 @@ public class DenunciarFragment extends Fragment implements TabHost.OnTabChangeLi
         //mFragmentTabHost.setup(getActivity(),getFragmentManager());
         mFragmentTabHost.setup(getActivity(),getFragmentManager(),android.R.id.tabcontent);
 
-
         //DatosGenerales
         mFragmentTabHost.addTab(mFragmentTabHost.newTabSpec("Capturar").setIndicator(getString(R.string.title_tabhost_capturar_fragment),null),
                                 DatosGeneralesFragment.class,null);
