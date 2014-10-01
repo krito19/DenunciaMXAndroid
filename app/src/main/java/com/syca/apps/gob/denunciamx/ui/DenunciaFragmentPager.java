@@ -73,5 +73,18 @@ public class DenunciaFragmentPager  extends FragmentActivity{
             return 4;
         }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position)
+            {
+                case 0:return "Capturar";
+                case 1:return "Evidencia";
+                case 2:return "Ubicación";
+                case 3: return "Enviar";
+                default:return "";
+            }
+        }
+
+    }
 }
-}
+

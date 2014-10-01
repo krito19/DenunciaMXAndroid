@@ -42,7 +42,8 @@
 
         <activity
             android:name=".ui.DenunciaMainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -64,7 +65,15 @@
         <activity android:name=".ui.DenunciaFragmentPager"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
-            android:parentActivityName=".ui.DenunciaMainActivity">
+            android:parentActivityName=".ui.DenunciaMainActivity"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity android:name=".ui.DenunciarTabsPager"
+            android:exported="false"
+            android:label="@string/title_denunicar_action_bar"
+            android:parentActivityName=".ui.DenunciaMainActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
 
     </application>

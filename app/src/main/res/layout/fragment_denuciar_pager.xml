@@ -15,7 +15,12 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/pager"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content" >
+        <!--android.support.v4.view.PagerTitleStrip
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" /-->
+        </android.support.v4.view.ViewPager>
         </LinearLayout>
 
     <LinearLayout
@@ -24,30 +29,30 @@
         android:layout_weight="1"
         android:gravity="center"
         android:orientation="horizontal">
-        <TextView
+        <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="hola"/>
-        <TextView
+            android:text="Capturar"/>
+        <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="hola"/>
-        <TextView
+            android:text="Evidencia"/>
+        <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="hola"/>
-        <TextView
+            android:text="Ubicación"/>
+        <Button
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text="hola"/>
+            android:text="Enviar"/>
         </LinearLayout>
 
 </LinearLayout>

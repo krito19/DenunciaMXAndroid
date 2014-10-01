@@ -51,7 +51,7 @@ public class DenunciaMainFragment extends Fragment {
 
     private  Intent makeIntentDenunciar()
     {
-        Intent intentDenunicar= new Intent(getActivity(),DenunciaFragmentPager.class);
+        Intent intentDenunicar= new Intent(getActivity(),DenunciarTabsPager.class);
         return  intentDenunicar;
     }
 
