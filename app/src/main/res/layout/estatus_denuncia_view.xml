@@ -2,11 +2,30 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    android:orientation="vertical"
     android:layout_height="0dp"
-    android:layout_weight="3">
+    android:layout_weight="2">
     <TextView
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:text="Estatus de la denuncia"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal|bottom"
+        android:textColor="#fafafa"
+        android:text="@string/estatus_de_la_denuncia"
+        android:layout_marginBottom="5dp"/>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="5dp"
+        android:gravity="center_horizontal|top">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_barra_estado"/>
+
+        </LinearLayout>
+
 </LinearLayout>

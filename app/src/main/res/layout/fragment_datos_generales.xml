@@ -23,13 +23,17 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/title_datos_generales"
-                        android:padding="10dp"/>
+                        android:padding="10dp"
+                        android:textColor="#fff"
+                        android:textColorHint="#fafafa"/>
                     <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/title_desea_presentar_su_queja"
-                            android:padding="10dp"/>
+                            android:padding="10dp"
+                            android:textColorHint="#fafafa"
+                            android:textColor="#fff"/>
 
                     <RadioGroup
                         android:layout_width="fill_parent"
@@ -41,11 +45,13 @@
                        <RadioButton
                            android:layout_width="wrap_content"
                            android:layout_height="fill_parent"
-                           android:text="SI"/>
+                           android:text="SI"
+                           android:textColor="#fff"/>
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
-                            android:text="NO"/>
+                            android:text="NO"
+                            android:textColor="#fff"/>
                         </RadioGroup>
 
 
@@ -57,7 +63,9 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
                 <EditText
                     android:id="@+id/edt_donde_denuncia"
                     android:layout_width="fill_parent"
@@ -65,7 +73,9 @@
                     android:hint="@string/title_donde"
                     android:isScrollContainer="true"
                     android:minLines="3"
-                    android:maxLines="5"/>
+                    android:maxLines="5"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
                 <EditText
                     android:id="@+id/edt_cuando_denuncia"
                     android:layout_width="fill_parent"
@@ -74,7 +84,9 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
                 <EditText
                     android:id="@+id/edt_como_denuncia"
                     android:layout_width="fill_parent"
@@ -83,7 +95,9 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
                 <EditText
                     android:id="@+id/edt_quienes_denuncia"
                     android:layout_width="fill_parent"
@@ -92,7 +106,9 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
                 <EditText
                     android:id="@+id/edt_servicio_denuncia"
                     android:layout_width="fill_parent"
@@ -101,7 +117,9 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:textColorHint="#fafafa"
+                    android:textColor="#fff"/>
 
             </LinearLayout>
         </ScrollView>

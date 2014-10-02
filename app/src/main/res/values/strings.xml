@@ -9,7 +9,7 @@
     <string name="title_denunciar">DENUNCIAR</string>
     <string name="title_mis_denuncias">MIS DENUNCIAS</string>
     <string name="title_mi_perfil">MI PERFIL</string>
-    <string name="title_nuestra_ubicacion">NUESTRA UBICACION</string>
+    <string name="title_nuestra_ubicacion">OFICINAS</string>
     <string name="title_pot">PORTAL DE OBLIGACIONES EN TRANSPARENCIA</string>
     <string name="title_informacion">INFORMACION</string>
     <string name="title_acerca_de">ACERCA DE</string>
@@ -22,13 +22,14 @@
     <string name="title_tabhost_enviar_fragment">ENVIAR</string>
 
     <!--Fragment Datos Generaels {Denunica}-->
-    <string name="title_datos_generales">DATOS GENERALES</string>
-    <string name="title_desea_presentar_su_queja">¿Desea Presentar su de manera anónima?</string>
-    <string name="title_que">¿Qué le pasó, qué vio o de qué se enteró? </string>
-    <string name="title_donde">¿Dónde sucedieron los hechos que denuncia?  </string>
-    <string name="title_cuando">¿Cuándo ocurrieron los hechos ?   </string>
-    <string name="title_como">¿Cómo se llevaron a cabo ?  </string>
-    <string name="title_quienes">¿Quiénes lo hicieron ? </string>
-    <string name="title_que_servicio">¿Qué trámite o servicio pretendía hacer u obtener al momento en que ocurrieron los hechos que denuncia ?  </string>
+    <string name="title_datos_generales">----DATOS GENERALES----</string>
+    <string name="title_desea_presentar_su_queja">¿DESEA PRESENTAR SU DE MANERA ANÓNIMA?</string>
+    <string name="title_que">¿QUÉ LE PASÓ, QUÉ VIO O DE QUÉ SE ENTERÓ? </string>
+    <string name="title_donde">¿DÓNDE SUCEDIERON LOS HECHOS QUE DENUNCIA?  </string>
+    <string name="title_cuando">¿CUÁNDO OCURRIERON LOS HECHOS ?   </string>
+    <string name="title_como">¿CÓMO SE LLEVARON A CABO ?  </string>
+    <string name="title_quienes">¿QUIÉNES LO HICIERON ? </string>
+    <string name="title_que_servicio">¿QUÉ TRÁMITE O SERVICIO PRETENDÍA HACER U OBTENER AL MOMENTO EN QUE OCURRIERON LOS HECHOS QUE DENUNCIA ?  </string>
+    <string name="estatus_de_la_denuncia">ESTATUS DE LA DENUNCIA</string>
 
 </resources>

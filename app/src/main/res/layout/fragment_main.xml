@@ -1,21 +1,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/ic_fondo"
+    >
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="4"
-        android:background="#111"
+        android:background="@drawable/border_bottom_white"
         android:orientation="vertical"
-        android:id="@+id/denunciar_view">
+        android:id="@+id/denunciar_view"
+        >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="3">
+            android:layout_weight="3"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            >
 
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:background="?attr/selectableItemBackground"
+               android:src="@drawable/ic_denunciar"/>
             </LinearLayout>
 
         <LinearLayout
@@ -29,6 +41,7 @@
                 android:textColor="#fff"
                 android:text="@string/title_denunciar"
                 android:textAppearance="@android:style/TextAppearance.Large"
+
                 android:gravity="center"
                 />
         </LinearLayout>
@@ -39,16 +52,24 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:background="#222"
+        android:background="@drawable/border_bottom_white"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+            <ImageView
+                android:layout_marginTop="4dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_mis_denuncias"/>
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:text="@string/title_mis_denuncias"
                 android:textAppearance="@android:style/TextAppearance.Small"
@@ -58,10 +79,19 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:clickable="true">
+
+            <ImageView
+                android:layout_marginTop="4dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_mi_perfil"/>
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:text="@string/title_mi_perfil"
                 android:textAppearance="@android:style/TextAppearance.Small"
@@ -71,10 +101,18 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_ubicanos"/>
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:text="@string/title_nuestra_ubicacion"
                 android:textAppearance="@android:style/TextAppearance.Small"
@@ -88,17 +126,26 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="#333"
-        android:orientation="horizontal">
+        android:background="@drawable/border_bottom_white"
+        android:orientation="horizontal"
+        android:clickable="true">
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="fill_parent"></LinearLayout>
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pot"/>
+            </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:gravity="left">
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -113,33 +160,50 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="#444">
+        android:layout_weight="2">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true">
+
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:text="@string/title_informacion"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:gravity="center"
+                android:layout_marginTop="4dp"
                 />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+                android:src="@drawable/ic_informacion"/>
             </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:clickable="true">
             <TextView
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:textColor="#fff"
                 android:text="@string/title_acerca_de"
                 android:textAppearance="@android:style/TextAppearance.Small"
                 android:gravity="center"
+                android:layout_marginTop="4dp"
                 />
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+
+                android:src="@drawable/ic_acerca_de"/>
 
             </LinearLayout>
 
@@ -147,8 +211,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:background="#555"
-        android:layout_weight=".5">
+        android:background="#b6302a"
+        android:layout_weight=".5"
+        android:clickable="true">
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
