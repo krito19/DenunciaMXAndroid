@@ -34,11 +34,6 @@ public class DenunciarTabsPager extends FragmentActivity {
         mViewPager = (ViewPager)findViewById(R.id.pager);
 
         mTabsAdapter = new TabsAdapter(this, mTabHost, mViewPager);
-        /*   Fragment datosGeneralesFragment = DatosGeneralesFragment.newInstance("","");
-        Fragment evidenciaFragment = EvidenciaFragment.newInstance("","");
-        Fragment ubicacionFragment= UbicacionDenunciaFragment.newInstance("","");
-        Fragment enviarDenunciaFragment = EnviarDenunciaFragment.newInstance("","");
-        */
 
         mTabsAdapter.addTab(mTabHost.newTabSpec("capturar").setIndicator("Capturar"),
                 DatosGeneralesFragment.class, null);
