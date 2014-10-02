@@ -1,6 +1,5 @@
 package com.syca.apps.gob.denunciamx.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,7 +17,6 @@ import butterknife.OnClick;
  * Created by JARP on 9/26/14.
  */
 public class DenunciaMainFragment extends Fragment {
-
 
     @InjectView(R.id.denunciar_view) View mDenunciarView;
 
@@ -45,15 +43,17 @@ public class DenunciaMainFragment extends Fragment {
     public void onClickDenunciarView()
     {
         Toast.makeText(getActivity(),"onClickDenunciar",Toast.LENGTH_SHORT).show();
-        startActivity(makeIntentDenunciar());
-
+        startActivity(UtilIntents.makeIntentDenunciar(getActivity()));
     }
 
-    private  Intent makeIntentDenunciar()
+    @OnClick(R.id.layout_denuncias_view)
+    public void onClickListDenuncia()
     {
-        Intent intentDenunicar= new Intent(getActivity(),DenunciarTabsPager.class);
-        return  intentDenunicar;
+        startActivity(UtilIntents.makeIntentListDenuncia(getActivity()));
     }
+
+
+
 
 
 }

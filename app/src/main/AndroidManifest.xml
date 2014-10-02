@@ -76,6 +76,13 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
 
+        <activity android:name=".ui.ListDenunciaActivity"
+            android:exported="false"
+            android:label="@string/title_mis_denuncias"
+            android:parentActivityName=".ui.DenunciaMainActivity">
+
+        </activity>
+
     </application>
 
 </manifest>

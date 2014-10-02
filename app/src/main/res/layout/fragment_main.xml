@@ -61,7 +61,8 @@
             android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
-            android:clickable="true">
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/layout_denuncias_view">
             <ImageView
                 android:layout_marginTop="4dp"
                 android:layout_width="64dp"
@@ -81,13 +82,13 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true">
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_marginTop="4dp"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:background="?attr/selectableItemBackground"
                 android:src="@drawable/ic_mi_perfil"/>
             <TextView
                 android:layout_width="fill_parent"
