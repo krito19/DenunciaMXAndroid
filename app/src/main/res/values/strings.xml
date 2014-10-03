@@ -22,7 +22,7 @@
     <string name="title_tabhost_enviar_fragment">ENVIAR</string>
 
     <!--Fragment Datos Generaels {Denunica}-->
-    <string name="title_datos_generales">----DATOS GENERALES----</string>
+    <string name="title_datos_generales">DATOS GENERALES</string>
     <string name="title_desea_presentar_su_queja">¿DESEA PRESENTAR SU DE MANERA ANÓNIMA?</string>
     <string name="title_que">¿QUÉ LE PASÓ, QUÉ VIO O DE QUÉ SE ENTERÓ? </string>
     <string name="title_donde">¿DÓNDE SUCEDIERON LOS HECHOS QUE DENUNCIA?  </string>

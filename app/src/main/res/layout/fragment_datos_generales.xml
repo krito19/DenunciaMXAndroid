@@ -1,18 +1,20 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.syca.apps.gob.denunciamx.ui.DatosGeneralesFragment">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.syca.apps.gob.denunciamx.ui.DatosGeneralesFragment">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:paddingRight="5dp"
         android:paddingLeft="5dp">
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -23,35 +25,35 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/title_datos_generales"
-                        android:padding="10dp"
-                        android:textColor="#fff"
+                        android:layout_margin="5dp"
+                        android:textColor="#fafafa"
                         android:textColorHint="#fafafa"/>
                     <TextView
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="@string/title_desea_presentar_su_queja"
-                            android:padding="10dp"
+                            android:layout_margin="5dp"
                             android:textColorHint="#fafafa"
-                            android:textColor="#fff"/>
+                            android:textColor="#fafafa"/>
 
                     <RadioGroup
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:orientation="horizontal"
-                        android:padding="10dp">
+                        android:layout_margin="5dp">
 
                        <RadioButton
                            android:layout_width="wrap_content"
                            android:layout_height="fill_parent"
                            android:text="SI"
-                           android:textColor="#fff"/>
+                           android:textColor="#fafafa"/>
                         <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="fill_parent"
                             android:text="NO"
-                            android:textColor="#fff"/>
+                            android:textColor="#fafafa"/>
                         </RadioGroup>
 
 
@@ -63,9 +65,12 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fafafa"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
                 <EditText
                     android:id="@+id/edt_donde_denuncia"
                     android:layout_width="fill_parent"
@@ -75,7 +80,11 @@
                     android:minLines="3"
                     android:maxLines="5"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textColor="#fafafa"
+                    android:padding="5dp"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
                 <EditText
                     android:id="@+id/edt_cuando_denuncia"
                     android:layout_width="fill_parent"
@@ -84,9 +93,12 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textColor="#fafafa"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
                 <EditText
                     android:id="@+id/edt_como_denuncia"
                     android:layout_width="fill_parent"
@@ -95,9 +107,12 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textColor="#fafafa"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
                 <EditText
                     android:id="@+id/edt_quienes_denuncia"
                     android:layout_width="fill_parent"
@@ -106,9 +121,12 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textColor="#fafafa"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
                 <EditText
                     android:id="@+id/edt_servicio_denuncia"
                     android:layout_width="fill_parent"
@@ -117,12 +135,16 @@
                     android:isScrollContainer="true"
                     android:minLines="3"
                     android:maxLines="5"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fff"/>
+                    android:textColor="#fafafa"
+                    android:textAppearance="@android:style/TextAppearance.Small"
+                    android:background="@drawable/rectangle_edit_text"
+                    android:layout_marginBottom="10dp"/>
 
             </LinearLayout>
-        </ScrollView>
+
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
