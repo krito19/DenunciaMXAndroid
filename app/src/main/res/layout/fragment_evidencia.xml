@@ -2,15 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.syca.apps.gob.denunciamx.ui.EvidenciaFragment"
-    >
+    tools:context="com.syca.apps.gob.denunciamx.ui.EvidenciaFragment">
 
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="120dp"
         android:gravity="center"
-        android:background="@drawable/border_bottom">
+        android:background="@drawable/border_bottom_white">
 
         <ImageButton
             android:layout_width="0dp"
@@ -30,23 +28,26 @@
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="120dp"
         android:gravity="center"
-        android:background="@drawable/border_bottom">
+        android:background="@drawable/border_bottom_white">
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_camera"/>
+            android:src="@drawable/ic_camera"
+            android:id="@+id/photo_launch_btn"
+            />
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3">
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/photo_scrollview"
+                >
 
             </HorizontalScrollView>
 
@@ -62,23 +63,24 @@
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="120dp"
         android:gravity="center"
-        android:background="@drawable/border_bottom">
+        android:background="@drawable/border_bottom_white">
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_microphone"/>
+            android:src="@drawable/ic_microphone"
+            android:id="@+id/audio_launch_btn"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3">
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/audio_scrollview">
 
             </HorizontalScrollView>
 
@@ -94,23 +96,24 @@
     </TableRow>
     <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="120dp"
         android:gravity="center"
-        android:background="@drawable/border_bottom">
+        android:background="@drawable/border_bottom_white">
         <ImageButton
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:src="@drawable/ic_video"/>
+            android:src="@drawable/ic_video"
+            android:id="@+id/video_launch_btn"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3">
             <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:id="@+id/video_scrollview">
 
             </HorizontalScrollView>
 
