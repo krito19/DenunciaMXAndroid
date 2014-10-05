@@ -66,14 +66,14 @@
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
             android:parentActivityName=".ui.DenunciaMainActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan">
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
 
         <activity android:name=".ui.DenunciarTabsPager"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
             android:parentActivityName=".ui.DenunciaMainActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="stateVisible|adjustResize">
         </activity>
 
         <activity android:name=".ui.ListDenunciaActivity"

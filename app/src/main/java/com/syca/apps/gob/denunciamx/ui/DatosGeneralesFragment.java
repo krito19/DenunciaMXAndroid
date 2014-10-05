@@ -1,14 +1,18 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 
 import com.syca.apps.gob.denunciamx.R;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -19,6 +23,14 @@ import com.syca.apps.gob.denunciamx.R;
  */
 public class DatosGeneralesFragment extends Fragment {
 
+
+    @InjectView(R.id.denuncia_tipo_radio) RadioGroup denuciaTipoAnonima;
+    @InjectView(R.id.que_denuncia_edit_text) EditText queDenunciaEditText;
+    @InjectView(R.id.donde_denuncia_edit_text) EditText dondeDenunciaEditText;
+    @InjectView(R.id.cuando_denuncia_edit_text) EditText cuandoDenunciaEditText;
+    @InjectView(R.id.como_denuncia_edit_text)  EditText comoDenunciaEditText;
+    @InjectView(R.id.quienes_denuncia_edit_text) EditText quienesDenunciaEditText;
+    @InjectView(R.id.servicio_denuncia_edit_text) EditText servicioDenunciaEditText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -64,7 +76,9 @@ public class DatosGeneralesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_datos_generales, container, false);
+        View view =inflater.inflate(R.layout.fragment_datos_generales, container, false);
+        ButterKnife.inject(this, view);
+        return view;
     }
 
 
