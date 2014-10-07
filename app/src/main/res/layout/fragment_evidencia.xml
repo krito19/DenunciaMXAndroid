@@ -1,132 +1,126 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.syca.apps.gob.denunciamx.ui.EvidenciaFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.syca.apps.gob.denunciamx.ui.EvidenciaFragment"
+    android:fillViewport="true">
 
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
-        android:background="@drawable/border_bottom_white">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.syca.apps.gob.denunciamx.ui.EvidenciaFragment">
 
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_search"/>
-
-        <EditText android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:hint="https://www.youtube.com/"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"/>
-
-
-    </TableRow>
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
-        android:background="@drawable/border_bottom_white">
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_camera"
-            android:id="@+id/photo_launch_btn"
-            />
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3">
+            android:gravity="center"
+            android:background="@drawable/border_bottom_white">
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_camera"
+                android:id="@+id/photo_launch_btn"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
             <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/photo_scrollview"
-                >
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:fillViewport="true"
+                android:layout_weight="9">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="64dp"
+                    android:id="@+id/photo_container_view"
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_camera"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/border_bottom_white">
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_microphone"
+                android:id="@+id/audio_launch_btn"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_weight="9">
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="64dp"
+                    android:id="@+id/audio_container_view"
+                    android:orientation="horizontal"/>
+            </HorizontalScrollView>
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_camera"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/border_bottom_white">
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_video"
+                android:id="@+id/video_launch_btn"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:minHeight="64dp"
+                android:layout_weight="9">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:id="@+id/video_container_view"
+                    android:orientation="horizontal">
+
+                </LinearLayout>
 
             </HorizontalScrollView>
 
-        </LinearLayout>
+            <ImageButton
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_camera"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                />
 
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_camera"
-            android:adjustViewBounds="true"/>
+        </TableRow>
+    </TableLayout>
 
-    </TableRow>
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
-        android:background="@drawable/border_bottom_white">
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_microphone"
-            android:id="@+id/audio_launch_btn"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3">
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/audio_scrollview">
-
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_camera"
-            android:adjustViewBounds="true"/>
-
-    </TableRow>
-    <TableRow
-        android:layout_width="fill_parent"
-        android:layout_height="120dp"
-        android:gravity="center"
-        android:background="@drawable/border_bottom_white">
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_video"
-            android:id="@+id/video_launch_btn"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3">
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/video_scrollview">
-
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_camera"
-            android:adjustViewBounds="true"/>
-
-    </TableRow>
-
-</TableLayout>
-
+</ScrollView>

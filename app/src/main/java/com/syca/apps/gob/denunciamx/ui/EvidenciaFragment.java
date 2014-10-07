@@ -1,16 +1,25 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 
+import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.ui.utils.MediaStoreSyca;
+import com.syca.apps.gob.denunciamx.ui.utils.PictureUtils;
+import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
 
 import java.io.File;
 
@@ -43,18 +52,16 @@ public class EvidenciaFragment extends Fragment {
     static final int MIC_SOUND_REQUEST = 3;
 
     @InjectView(R.id.video_launch_btn) ImageButton mButtonCreateVideo;
-    @InjectView(R.id.video_scrollview) HorizontalScrollView mVideosView;
+    @InjectView(R.id.video_container_view) LinearLayout  mVideosView;
     
     @InjectView(R.id.photo_launch_btn) ImageButton mButtonCreatePhoto;
-    @InjectView(R.id.photo_scrollview) HorizontalScrollView mPhotosView;
+    @InjectView(R.id.photo_container_view)LinearLayout mPhotosView;
     
     @InjectView(R.id.audio_launch_btn) ImageButton mButtonCreateAudio;
-    @InjectView(R.id.audio_scrollview) HorizontalScrollView mAudiosView;
-    
-    
+    @InjectView(R.id.audio_container_view) LinearLayout  mAudiosView;
 
-
-
+    File mPhotoFile;
+    File mVideoFile;
 
     /**
      * Use this factory method to create a new instance of
@@ -77,10 +84,80 @@ public class EvidenciaFragment extends Fragment {
         // Required empty public constructor
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
+        //Photo
+        if(requestCode==CAMERA_PIC_REQUEST )
+        {
+            if(resultCode== Activity.RESULT_OK)
+            {
+                ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
+                mPhotosView.addView(template);
+                PictureUtils.setImageScaled(getActivity(), template, mPhotoFile.getAbsolutePath());
+
+            }
+            else if(resultCode==Activity.RESULT_CANCELED)
+            {
+
+            }
+            else
+            {
+
+            }
+
+        }
+        //Video
+        else if(requestCode==CAMERA_VIDEO_REQUEST)
+        {
+            if(resultCode== Activity.RESULT_OK)
+            {
+                ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mVideosView,false);
+
+                Bitmap videoThumbnail =
+                        ThumbnailUtils.createVideoThumbnail(mVideoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
+
+                if(videoThumbnail==null)
+                    videoThumbnail=PictureUtils.createVideoThumbnail(getActivity(), Uri.fromFile(mVideoFile));
+
+                template.setImageBitmap(videoThumbnail);
+                mVideosView.addView(template);
+
+
+            }
+            else if(resultCode==Activity.RESULT_CANCELED)
+            {
+
+            }
+            else
+            {
+
+            }
+
+        }
+        //Audio
+        else if(requestCode==MIC_SOUND_REQUEST)
+        {
+            if(resultCode== Activity.RESULT_OK)
+            {
+
+            }
+            else if(resultCode==Activity.RESULT_CANCELED)
+            {
+
+            }
+            else
+            {
+
+            }
+
+        }
+
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,20 +197,22 @@ public class EvidenciaFragment extends Fragment {
     {
         // getOutputMediaFile to create a new filename for this specific video;
 
-        File mVideoFile = MediaStore.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_VIDEO);
+        mVideoFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_VIDEO);
 
-        Intent videoIntent = UtilIntents.makeIntentCaptionVideo(getActivity(),mVideoFile);
+        Intent videoIntent = UtilIntents.makeIntentCaptionVideo(getActivity(), mVideoFile);
 
         startActivityForResult(videoIntent, CAMERA_VIDEO_REQUEST);
     }
 
     private void launchPhotoIntent()
     {
-        File mPhotoFile = MediaStore.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_IMAGE);
+        mPhotoFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_IMAGE);
 
-        Intent photoIntent = UtilIntents.makeIntentPhoto(getActivity(),mPhotoFile);
+        Intent photoIntent = UtilIntents.makeIntentPhoto(getActivity(), mPhotoFile);
 
         startActivityForResult(photoIntent,CAMERA_PIC_REQUEST);
     }
+
+
 
 }

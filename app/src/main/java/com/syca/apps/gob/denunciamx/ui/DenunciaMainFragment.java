@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

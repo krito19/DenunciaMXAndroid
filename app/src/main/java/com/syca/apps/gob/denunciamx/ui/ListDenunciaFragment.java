@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
