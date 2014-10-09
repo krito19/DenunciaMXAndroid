@@ -31,6 +31,7 @@
     <string name="title_quienes">¿QUIÉNES LO HICIERON ? </string>
     <string name="title_que_servicio">¿QUÉ TRÁMITE O SERVICIO PRETENDÍA HACER U OBTENER AL MOMENTO EN QUE OCURRIERON LOS HECHOS QUE DENUNCIA ?  </string>
     <string name="estatus_de_la_denuncia">ESTATUS DE LA DENUNCIA</string>
+    <string name="delete_evidencia">borrar</string>
 
 
     <!--Fragment List Denuncias-->

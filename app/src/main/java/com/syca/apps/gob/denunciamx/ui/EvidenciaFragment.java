@@ -1,17 +1,26 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,6 +72,14 @@ public class EvidenciaFragment extends Fragment {
     File mPhotoFile;
     File mVideoFile;
 
+    EvidenciaActionMode evidenciaActionMode ;
+
+    Activity mContext;
+
+    TestAsync asyncUploader ;
+
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -80,23 +97,40 @@ public class EvidenciaFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public EvidenciaFragment() {
         // Required empty public constructor
+        evidenciaActionMode = new EvidenciaActionMode();
+        mContext = getActivity();
+
+
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        mContext = getActivity();
         //Photo
         if(requestCode==CAMERA_PIC_REQUEST )
         {
             if(resultCode== Activity.RESULT_OK)
             {
-                ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
+                final ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
                 mPhotosView.addView(template);
-                PictureUtils.setImageScaled(getActivity(), template, mPhotoFile.getAbsolutePath());
+                asyncUploader = new TestAsync();
+                asyncUploader.execute(mPhotoFile);
+                PictureUtils.setImageScaled(mContext, template, mPhotoFile.getAbsolutePath());
+                template.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        v.setSelected(true);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                            registerForContextMenu(template);
+                        } else {
+                            getActivity().startActionMode(evidenciaActionMode);
+                        }
+                        return false;
+                    }
+                });
 
             }
             else if(resultCode==Activity.RESULT_CANCELED)
@@ -114,16 +148,30 @@ public class EvidenciaFragment extends Fragment {
         {
             if(resultCode== Activity.RESULT_OK)
             {
-                ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mVideosView,false);
+                final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
 
                 Bitmap videoThumbnail =
                         ThumbnailUtils.createVideoThumbnail(mVideoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
 
                 if(videoThumbnail==null)
-                    videoThumbnail=PictureUtils.createVideoThumbnail(getActivity(), Uri.fromFile(mVideoFile));
+                    videoThumbnail=PictureUtils.createVideoThumbnail(mContext, Uri.fromFile(mVideoFile));
 
-                template.setImageBitmap(videoThumbnail);
+                ((ImageView)template.findViewById(R.id.image_video_thumbnail)).setImageBitmap(videoThumbnail);
+
                 mVideosView.addView(template);
+                template.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        v.setSelected(true);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                            registerForContextMenu(template);
+                        } else {
+
+                            getActivity().startActionMode(evidenciaActionMode);
+                        }
+                        return false;
+                    }
+                });
 
 
             }
@@ -157,8 +205,6 @@ public class EvidenciaFragment extends Fragment {
 
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,8 +234,6 @@ public class EvidenciaFragment extends Fragment {
             }
         });
 
-
-
         return view;
     }
 
@@ -213,6 +257,59 @@ public class EvidenciaFragment extends Fragment {
         startActivityForResult(photoIntent,CAMERA_PIC_REQUEST);
     }
 
+    @TargetApi(11)
+    private class EvidenciaActionMode implements ActionMode.Callback {
+
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            MenuInflater inflater = mode.getMenuInflater();
+            inflater.inflate(R.menu.context_media_evidencia, menu);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.menu_item_delete_evidencia:
+                    //TODO:Get all views selected and remove from their layouts
+                    mode.finish();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+
+        }
+    }
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        getActivity().getMenuInflater().inflate(R.menu.context_media_evidencia, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+        int position = info.position;
+
+        switch (item.getItemId())
+        {
+            case R.id.menu_item_delete_evidencia:
+                //TODO:Get all views selected and remove from their layouts
+                return true;
+        }
+        return super.onContextItemSelected(item);
+    }
 
 
 }

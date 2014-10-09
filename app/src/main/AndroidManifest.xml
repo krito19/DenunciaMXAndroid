@@ -12,8 +12,7 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
-    <!--GCM Permission-->
+    <!-- GCM Permission -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -21,11 +20,9 @@
     <uses-feature
         android:name="android.hardware.location.gps"
         android:required="true" />
-
-
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
-
 
     <!-- Required OpenGL ES 2.0. for Maps V2 -->
     <uses-feature
@@ -48,46 +45,50 @@
         <activity
             android:name=".ui.DenunciaMainActivity"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.SingleFragmentActivity"
+        <activity
+            android:name=".ui.SingleFragmentActivity"
             android:exported="false"
             android:screenOrientation="portrait" >
-
         </activity>
-        <activity android:name=".ui.DenunciarActivity"
+        <activity
+            android:name=".ui.DenunciarActivity"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
-            android:parentActivityName=".ui.DenunciaMainActivity">
-            </activity>
-
-
-        <activity android:name=".ui.DenunciaFragmentPager"
-            android:exported="false"
-            android:label="@string/title_denunicar_action_bar"
-            android:parentActivityName=".ui.DenunciaMainActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:parentActivityName=".ui.DenunciaMainActivity" >
         </activity>
-
-        <activity android:name=".ui.DenunciarTabsPager"
+        <activity
+            android:name=".ui.DenunciaFragmentPager"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
             android:parentActivityName=".ui.DenunciaMainActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize">
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
-
-        <activity android:name=".ui.ListDenunciaActivity"
+        <activity
+            android:name=".ui.DenunciarTabsPager"
+            android:exported="false"
+            android:label="@string/title_denunicar_action_bar"
+            android:parentActivityName=".ui.DenunciaMainActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name=".ui.ListDenunciaActivity"
             android:exported="false"
             android:label="@string/title_mis_denuncias"
-            android:parentActivityName=".ui.DenunciaMainActivity">
-
+            android:parentActivityName=".ui.DenunciaMainActivity" >
         </activity>
 
+        <service
+            android:name="service.DenuciaService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
