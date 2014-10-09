@@ -72,6 +72,7 @@ public class EvidenciaFragment extends Fragment {
 
     File mPhotoFile;
     File mVideoFile;
+    File mAudioFile;
 
     EvidenciaActionMode evidenciaActionMode ;
 
@@ -263,6 +264,15 @@ public class EvidenciaFragment extends Fragment {
             }
         });
 
+        mButtonCreateAudio.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                launchAudioCaptureIntent();
+            }
+
+        })
+
 
         return view;
     }
@@ -290,6 +300,16 @@ public class EvidenciaFragment extends Fragment {
         Intent photoIntent = UtilIntents.makeIntentPhoto( mPhotoFile);
 
         startActivityForResult(photoIntent,CAMERA_PIC_REQUEST);
+    }
+
+    private void launchAudioCaptureIntent()
+    {
+        mAudioFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_AUDIO);
+
+        Intent audioIntent = UtilIntents.makeIntentCaptureAudio(mAudioFile);
+
+        startActivityForResult(mAudioFile,MIC_SOUND_REQUEST)
+
     }
 
     @TargetApi(11)

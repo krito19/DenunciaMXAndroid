@@ -50,5 +50,14 @@ public class UtilIntents {
         return mImageIntent;
     }
 
+    public static Intent makeIntentCaptureAudio(Contenxt context,File audioFile)
+    {
+        Intent mIntentAudioCapture = new Intent(context,SoundRecordActivity.class);
+
+        mIntentAudioCapture.putExtra(SoundRecordActivity.EXTRA_OUTPUT,audioFile.getAbsolutePath());
+
+        return mIntentAudioCapture;
+    }
+
 }
 

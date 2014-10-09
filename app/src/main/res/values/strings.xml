@@ -34,8 +34,8 @@
     <string name="delete_evidencia">borrar</string>
 
 
-    <!--Fragment List Denuncias-->
-
+    <!--Sound Record Activity -->
+    <string name="title_sound_record_activity">Graba tu evidencia</string>
 
 
 </resources>
