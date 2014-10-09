@@ -8,6 +8,7 @@ import android.webkit.MimeTypeMap;
 
 import com.syca.apps.gob.denunciamx.ui.DenunciarTabsPager;
 import com.syca.apps.gob.denunciamx.ui.ListDenunciaActivity;
+import com.syca.apps.gob.denunciamx.ui.SoundRecordActivity;
 
 import java.io.File;
 
@@ -72,6 +73,16 @@ public class UtilIntents {
         viewEvidenciaIntent.setDataAndType(videoUri,mimeType);
 
         return viewEvidenciaIntent;
+    }
+
+
+    public static Intent makeIntentCaptureAudio(Context context,File audioFile)
+    {
+        Intent mIntentAudioCapture = new Intent(context,SoundRecordActivity.class);
+
+        mIntentAudioCapture.putExtra(SoundRecordActivity.EXTRA_OUTPUT,audioFile.getAbsolutePath());
+
+        return mIntentAudioCapture;
     }
 
 }

@@ -271,7 +271,7 @@ public class EvidenciaFragment extends Fragment {
                 launchAudioCaptureIntent();
             }
 
-        })
+        });
 
 
         return view;
@@ -306,9 +306,10 @@ public class EvidenciaFragment extends Fragment {
     {
         mAudioFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_AUDIO);
 
-        Intent audioIntent = UtilIntents.makeIntentCaptureAudio(mAudioFile);
+        Intent audioIntent = UtilIntents.makeIntentCaptureAudio(mContext,mAudioFile);
 
-        startActivityForResult(mAudioFile,MIC_SOUND_REQUEST)
+
+        startActivityForResult(audioIntent,MIC_SOUND_REQUEST);
 
     }
 
