@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.maps.GoogleMap;
@@ -70,8 +71,9 @@ public class UbicacionDenunciaFragment extends Fragment {
 
         View v =inflater.inflate(R.layout.fragment_ubicacion_denuncia, container, false);
 
+        ViewStub mapStub = (ViewStub) v.findViewById(R.id.map_stub);
 
-        mapView = (MapView) v.findViewById(R.id.map);
+        mapView = (MapView) mapStub.inflate();
 
         mapView.onCreate(savedInstanceState);
 
@@ -84,7 +86,6 @@ public class UbicacionDenunciaFragment extends Fragment {
         }
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
-
 
         return v;
 

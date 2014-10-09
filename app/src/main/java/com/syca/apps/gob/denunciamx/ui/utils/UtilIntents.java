@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.webkit.MimeTypeMap;
 
 import com.syca.apps.gob.denunciamx.ui.DenunciarTabsPager;
 import com.syca.apps.gob.denunciamx.ui.ListDenunciaActivity;
@@ -27,7 +28,7 @@ public class UtilIntents {
         return intentListDenuncia;
     }
 
-    public static Intent makeIntentCaptionVideo(Context context, File videoFile)
+    public static Intent makeIntentCaptionVideo( File videoFile)
     {
         // TODO - Create a new intent to launch the MediaStore, Image capture function
         // See: http://developer.android.com/reference/android/provider/MediaStore.html
@@ -44,7 +45,7 @@ public class UtilIntents {
 
     }
 
-    public static Intent makeIntentPhoto(Context context,File photoFile)
+    public static Intent makeIntentPhoto(File photoFile)
     {
 
         Intent mImageIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -52,6 +53,25 @@ public class UtilIntents {
         mImageIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
 
         return mImageIntent;
+    }
+
+
+    public static Intent makeIntentShowEvidenciaFile( File evidenciaFile)
+    {
+        if(!evidenciaFile.exists())
+            return null;
+
+        Intent viewEvidenciaIntent = new Intent();
+        viewEvidenciaIntent.setAction(Intent.ACTION_VIEW);
+        Uri videoUri = Uri.fromFile(evidenciaFile);
+        String fileExtension
+                = MimeTypeMap.getFileExtensionFromUrl(videoUri.toString());
+        String mimeType
+                = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+
+        viewEvidenciaIntent.setDataAndType(videoUri,mimeType);
+
+        return viewEvidenciaIntent;
     }
 
 }

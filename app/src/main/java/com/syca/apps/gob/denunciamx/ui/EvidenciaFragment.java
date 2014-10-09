@@ -31,6 +31,7 @@ import com.syca.apps.gob.denunciamx.ui.utils.PictureUtils;
 import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
 
 import java.io.File;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -79,6 +80,11 @@ public class EvidenciaFragment extends Fragment {
     TestAsync asyncUploader ;
 
 
+    HashMap<Object,Uri> photosKeyList;
+    HashMap<Object,Uri> videoKeyList;
+    HashMap<Object,Uri> audioKeyList;
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -101,14 +107,13 @@ public class EvidenciaFragment extends Fragment {
     public EvidenciaFragment() {
         // Required empty public constructor
         evidenciaActionMode = new EvidenciaActionMode();
-        mContext = getActivity();
-
-
+        photosKeyList = new HashMap<Object, Uri>();
+        videoKeyList= new HashMap<Object, Uri>();
+        audioKeyList= new HashMap<Object, Uri>();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mContext = getActivity();
         //Photo
         if(requestCode==CAMERA_PIC_REQUEST )
         {
@@ -119,6 +124,7 @@ public class EvidenciaFragment extends Fragment {
                 asyncUploader = new TestAsync();
                 asyncUploader.execute(mPhotoFile);
                 PictureUtils.setImageScaled(mContext, template, mPhotoFile.getAbsolutePath());
+                photosKeyList.put(template.getTag(),Uri.fromFile(mPhotoFile));
                 template.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -128,7 +134,15 @@ public class EvidenciaFragment extends Fragment {
                         } else {
                             getActivity().startActionMode(evidenciaActionMode);
                         }
-                        return false;
+                        return true;
+                    }
+                });
+                template.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri uri = photosKeyList.get(v.getTag());
+                        File f = new File(uri.toString());
+                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
                     }
                 });
 
@@ -159,6 +173,7 @@ public class EvidenciaFragment extends Fragment {
                 ((ImageView)template.findViewById(R.id.image_video_thumbnail)).setImageBitmap(videoThumbnail);
 
                 mVideosView.addView(template);
+                photosKeyList.put(template.getTag(), Uri.fromFile(mVideoFile));
                 template.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -169,7 +184,15 @@ public class EvidenciaFragment extends Fragment {
 
                             getActivity().startActionMode(evidenciaActionMode);
                         }
-                        return false;
+                        return true;
+                    }
+                });
+                template.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri uri = videoKeyList.get(v.getTag());
+                        File f = new File(uri.toString());
+                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
                     }
                 });
 
@@ -206,6 +229,12 @@ public class EvidenciaFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mContext = activity;
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -234,7 +263,13 @@ public class EvidenciaFragment extends Fragment {
             }
         });
 
+
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private void launchVideoCameraIntent()
@@ -243,7 +278,7 @@ public class EvidenciaFragment extends Fragment {
 
         mVideoFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_VIDEO);
 
-        Intent videoIntent = UtilIntents.makeIntentCaptionVideo(getActivity(), mVideoFile);
+        Intent videoIntent = UtilIntents.makeIntentCaptionVideo(mVideoFile);
 
         startActivityForResult(videoIntent, CAMERA_VIDEO_REQUEST);
     }
@@ -252,7 +287,7 @@ public class EvidenciaFragment extends Fragment {
     {
         mPhotoFile = MediaStoreSyca.getOutputMediaFile(EvidenciaFragment.MEDIA_TYPE_IMAGE);
 
-        Intent photoIntent = UtilIntents.makeIntentPhoto(getActivity(), mPhotoFile);
+        Intent photoIntent = UtilIntents.makeIntentPhoto( mPhotoFile);
 
         startActivityForResult(photoIntent,CAMERA_PIC_REQUEST);
     }
@@ -276,7 +311,7 @@ public class EvidenciaFragment extends Fragment {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.menu_item_delete_evidencia:
-                    //TODO:Get all views selected and remove from their layouts
+                    removeSelectedItems();
                     mode.finish();
                     return true;
                 default:
@@ -306,10 +341,38 @@ public class EvidenciaFragment extends Fragment {
         {
             case R.id.menu_item_delete_evidencia:
                 //TODO:Get all views selected and remove from their layouts
+                removeSelectedItems();
                 return true;
         }
         return super.onContextItemSelected(item);
     }
 
+
+    private void removeSelectedItems()
+    {
+        for (int i = 0;i<mVideosView.getChildCount();i++)
+            if(mVideosView.getChildAt(i).isSelected())
+                removeItem(mVideosView,mVideosView.getChildAt(i),videoKeyList);
+
+        for (int i = 0;i<mPhotosView.getChildCount();i++)
+            if(mPhotosView.getChildAt(i).isSelected())
+                removeItem(mPhotosView,mPhotosView.getChildAt(i),photosKeyList);
+
+
+    }
+
+    private void removeItem(final LinearLayout view, final View viewToRemove,HashMap list)
+    {
+        final Object tag = viewToRemove.getTag();
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                view.removeView(viewToRemove);
+            }
+        });
+        view.refreshDrawableState();
+
+        list.remove(tag);
+    }
 
 }

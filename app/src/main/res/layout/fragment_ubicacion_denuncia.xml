@@ -48,10 +48,16 @@
             android:layout_margin="30dp"
             class="com.google.android.gms.maps.SupportMapFragment"/-->
 
-        <com.google.android.gms.maps.MapView android:id="@+id/map"
+        <!--com.google.android.gms.maps.MapView android:id="@+id/map"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"/-->
+        <ViewStub
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:inflatedId="@+id/map_view"
+            android:layout="@layout/map_denuncia"
+            android:id="@+id/map_stub"/>
 
     </LinearLayout>
 

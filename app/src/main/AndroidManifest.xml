@@ -74,6 +74,7 @@
             android:name=".ui.DenunciarTabsPager"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.DenunciaMainActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>

@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
@@ -137,6 +138,7 @@ public class DenunciarTabsPager extends FragmentActivity {
         public void onTabChanged(String tabId) {
             int position = mTabHost.getCurrentTab();
             mViewPager.setCurrentItem(position);
+
         }
 
         @Override
