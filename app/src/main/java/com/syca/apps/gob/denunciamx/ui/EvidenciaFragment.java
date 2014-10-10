@@ -4,6 +4,7 @@ package com.syca.apps.gob.denunciamx.ui;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 
 /**
@@ -66,10 +68,10 @@ public class EvidenciaFragment extends Fragment {
 
     @InjectView(R.id.video_launch_btn) ImageButton mButtonCreateVideo;
     @InjectView(R.id.video_container_view) LinearLayout  mVideosView;
-    
+
     @InjectView(R.id.photo_launch_btn) ImageButton mButtonCreatePhoto;
     @InjectView(R.id.photo_container_view)LinearLayout mPhotosView;
-    
+
     @InjectView(R.id.audio_launch_btn) ImageButton mButtonCreateAudio;
     @InjectView(R.id.audio_container_view) LinearLayout  mAudiosView;
 
@@ -131,8 +133,13 @@ public class EvidenciaFragment extends Fragment {
             {
                 final ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
                 mPhotosView.addView(template);
+                if(null!=data&&null!=data.getData())
+                {
+                    mPhotoFile=getFileFromIntent(data);
+                }
                 asyncUploader = new TestAsync();
                 asyncUploader.execute(mPhotoFile);
+
                 PictureUtils.setImageScaled(mContext, template, mPhotoFile.getAbsolutePath());
                 template.setId(UIUtils.generateViewId());
                 photosKeyList.put(template.getId(), Uri.fromFile(mPhotoFile));
@@ -175,6 +182,10 @@ public class EvidenciaFragment extends Fragment {
             {
                 final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
 
+                if(null!=data&&null!=data.getData())
+                {
+                    mVideoFile=getFileFromIntent(data);
+                }
 
                 Bitmap videoThumbnail =
                         ThumbnailUtils.createVideoThumbnail(mVideoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
@@ -232,6 +243,11 @@ public class EvidenciaFragment extends Fragment {
                 ((ImageView)template.findViewById(R.id.image_thumbnail)).
                         setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_audio_wave));
 
+                if(null!=data&&null!=data.getData())
+                {
+                    mAudioFile=getFileFromIntent(data);
+                }
+
                 mAudiosView.addView(template);
                 template.setId(UIUtils.generateViewId());
                 audioKeyList.put(template.getId(), Uri.fromFile(mAudioFile));
@@ -270,6 +286,23 @@ public class EvidenciaFragment extends Fragment {
         }
 
     }
+
+
+
+    public File getFileFromIntent(Intent data)
+    {
+        Uri selectedImage = data.getData();
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor cursor = mContext.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String picturePath = cursor.getString(columnIndex);
+        cursor.close();
+        return  new File(picturePath);
+    }
+
+
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -493,6 +526,36 @@ public class EvidenciaFragment extends Fragment {
         view.refreshDrawableState();
 
         list.remove(idView);
+    }
+
+
+    @OnClick({R.id.btn_add_audio,R.id.btn_add_video,R.id.btn_add_photo})
+    public void clickAddMediaButton(ImageButton buttonMedia)
+    {
+        int mediaType = 0;
+        int resultRequest =0;
+        switch (buttonMedia.getId()) {
+            case R.id.btn_add_audio:
+                mediaType=UtilIntents.TYPE_AUDIO;
+                resultRequest=MIC_SOUND_REQUEST;
+                break;
+            case R.id.btn_add_photo:
+                mediaType=UtilIntents.TYPE_PHOTO;
+                resultRequest=CAMERA_PIC_REQUEST;
+                break;
+            case R.id.btn_add_video:
+                mediaType=UtilIntents.TYPE_VIDEO;
+                resultRequest=CAMERA_VIDEO_REQUEST;
+                break;
+            default:
+                break;
+        }
+
+        Intent intentPickMediaFile = UtilIntents.makeIntentMediaPicker(mediaType);
+
+        startActivityForResult(Intent.createChooser(intentPickMediaFile, "Selecciona el archivo"), resultRequest);
+
+
     }
 
 }

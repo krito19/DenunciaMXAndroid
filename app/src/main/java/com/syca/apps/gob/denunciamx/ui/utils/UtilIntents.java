@@ -17,6 +17,10 @@ import java.io.File;
  */
 public class UtilIntents {
 
+    public final static int TYPE_AUDIO=1;
+    public final static int TYPE_PHOTO=2;
+    public final static int TYPE_VIDEO=3;
+
     public static Intent makeIntentDenunciar(Context context)
     {
         Intent intentDenunicar= new Intent(context,DenunciarTabsPager.class);
@@ -80,6 +84,32 @@ public class UtilIntents {
         mIntentAudioCapture.putExtra(SoundRecordActivity.EXTRA_OUTPUT,audioFile.getAbsolutePath());
 
         return mIntentAudioCapture;
+    }
+
+
+    public static Intent makeIntentMediaPicker(int MEDIA_TYPE)
+    {
+        Intent mediaPickerIntent = new Intent();
+        //mediaPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+        switch (MEDIA_TYPE)
+        {
+            case TYPE_AUDIO:
+                mediaPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+                mediaPickerIntent.setType("audio/*");
+                break;
+            case TYPE_PHOTO:
+                mediaPickerIntent.setAction(Intent.ACTION_PICK);
+                mediaPickerIntent.setType("image/*");
+                break;
+            case TYPE_VIDEO:
+                mediaPickerIntent.setAction(Intent.ACTION_PICK);
+                mediaPickerIntent.setType("video/*");
+                break;
+            default:
+                break;
+        }
+
+        return  mediaPickerIntent;
     }
 
 }
