@@ -23,6 +23,9 @@ public class TestAsync extends AsyncTask<File,Boolean,Void>{
 
         File file = params[0];
 
+        if(MY_ACCESS_KEY_ID.isEmpty()||MY_SECRET_KEY.isEmpty()||DENUNCIA_BUCKET.isEmpty())
+            return null;
+
         AmazonS3Client s3Client = new AmazonS3Client( new BasicAWSCredentials( MY_ACCESS_KEY_ID, MY_SECRET_KEY ) );
 
         if(!s3Client.doesBucketExist(DENUNCIA_BUCKET))

@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import com.syca.apps.gob.denunciamx.R;
 import com.syca.apps.gob.denunciamx.ui.utils.MediaStoreSyca;
 import com.syca.apps.gob.denunciamx.ui.utils.PictureUtils;
+import com.syca.apps.gob.denunciamx.ui.utils.UIUtils;
 import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
 
 import java.io.File;
@@ -61,6 +62,8 @@ public class EvidenciaFragment extends Fragment {
     static final int CAMERA_VIDEO_REQUEST = 2;
     static final int MIC_SOUND_REQUEST = 3;
 
+
+
     @InjectView(R.id.video_launch_btn) ImageButton mButtonCreateVideo;
     @InjectView(R.id.video_container_view) LinearLayout  mVideosView;
     
@@ -81,11 +84,17 @@ public class EvidenciaFragment extends Fragment {
     TestAsync asyncUploader ;
 
 
-    HashMap<Object,Uri> photosKeyList;
-    HashMap<Object,Uri> videoKeyList;
-    HashMap<Object,Uri> audioKeyList;
+    HashMap<Integer,Uri> photosKeyList;
+    HashMap<Integer,Uri> videoKeyList;
+    HashMap<Integer,Uri> audioKeyList;
 
+    private static String KEY_VIDEO_FILE="KEY_VIDEO_FILE";
+    private static String KEY_PHOTO_FILE="KEY_VIDEO_FILE";
+    private static String KEY_AUDIO_FILE="KEY_VIDEO_FILE";
 
+    private static String KEY_VIDEO_LIST="KEY_VIDEO_LIST";
+    private static String KEY_PHOTO_LIST="KEY_VIDEO_LIST";
+    private static String KEY_AUDIO_LIST="KEY_VIDEO_LIST";
 
     /**
      * Use this factory method to create a new instance of
@@ -108,9 +117,9 @@ public class EvidenciaFragment extends Fragment {
     public EvidenciaFragment() {
         // Required empty public constructor
         evidenciaActionMode = new EvidenciaActionMode();
-        photosKeyList = new HashMap<Object, Uri>();
-        videoKeyList= new HashMap<Object, Uri>();
-        audioKeyList= new HashMap<Object, Uri>();
+        photosKeyList = new HashMap<Integer, Uri>();
+        videoKeyList= new HashMap<Integer, Uri>();
+        audioKeyList= new HashMap<Integer, Uri>();
     }
 
     @Override
@@ -125,7 +134,8 @@ public class EvidenciaFragment extends Fragment {
                 asyncUploader = new TestAsync();
                 asyncUploader.execute(mPhotoFile);
                 PictureUtils.setImageScaled(mContext, template, mPhotoFile.getAbsolutePath());
-                photosKeyList.put(template.getTag(),Uri.fromFile(mPhotoFile));
+                template.setId(UIUtils.generateViewId());
+                photosKeyList.put(template.getId(), Uri.fromFile(mPhotoFile));
                 template.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -141,8 +151,8 @@ public class EvidenciaFragment extends Fragment {
                 template.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Uri uri = photosKeyList.get(v.getTag());
-                        File f = new File(uri.toString());
+                        Uri uri = photosKeyList.get(v.getId());
+                        File f = new File(uri.getPath());
                         startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
                     }
                 });
@@ -165,16 +175,18 @@ public class EvidenciaFragment extends Fragment {
             {
                 final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
 
+
                 Bitmap videoThumbnail =
                         ThumbnailUtils.createVideoThumbnail(mVideoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
 
                 if(videoThumbnail==null)
                     videoThumbnail=PictureUtils.createVideoThumbnail(mContext, Uri.fromFile(mVideoFile));
 
-                ((ImageView)template.findViewById(R.id.image_video_thumbnail)).setImageBitmap(videoThumbnail);
+                ((ImageView)template.findViewById(R.id.image_thumbnail)).setImageBitmap(videoThumbnail);
 
                 mVideosView.addView(template);
-                photosKeyList.put(template.getTag(), Uri.fromFile(mVideoFile));
+                template.setId(UIUtils.generateViewId());
+                videoKeyList.put(template.getId(), Uri.fromFile(mVideoFile));
                 template.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
@@ -191,8 +203,8 @@ public class EvidenciaFragment extends Fragment {
                 template.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Uri uri = videoKeyList.get(v.getTag());
-                        File f = new File(uri.toString());
+                        Uri uri = videoKeyList.get(v.getId());
+                        File f = new File(uri.getPath());
                         startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
                     }
                 });
@@ -214,6 +226,36 @@ public class EvidenciaFragment extends Fragment {
         {
             if(resultCode== Activity.RESULT_OK)
             {
+
+                final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
+
+                ((ImageView)template.findViewById(R.id.image_thumbnail)).
+                        setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_audio_wave));
+
+                mAudiosView.addView(template);
+                template.setId(UIUtils.generateViewId());
+                audioKeyList.put(template.getId(), Uri.fromFile(mAudioFile));
+                template.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        v.setSelected(true);
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                            registerForContextMenu(template);
+                        } else {
+
+                            getActivity().startActionMode(evidenciaActionMode);
+                        }
+                        return true;
+                    }
+                });
+                template.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri uri = audioKeyList.get(v.getId());
+                        File f = new File(uri.getPath());
+                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
+                    }
+                });
 
             }
             else if(resultCode==Activity.RESULT_CANCELED)
@@ -242,6 +284,36 @@ public class EvidenciaFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        setRetainInstance(true);
+        if(null!=savedInstanceState)
+        {
+            handleSavedInstance(savedInstanceState);
+        }
+    }
+
+    private void handleSavedInstance(Bundle savedInstanceState) {
+
+        String videoPath = savedInstanceState.getString(KEY_VIDEO_FILE);
+
+        String photoPath = savedInstanceState.getString(KEY_PHOTO_FILE);
+
+        String audioPath = savedInstanceState.getString(KEY_AUDIO_FILE);
+
+        if(null!=videoPath) mVideoFile= new File(videoPath);
+
+        if(null!=photoPath) mPhotoFile= new File(photoPath);
+
+        if(null!=audioPath) mAudioFile= new File(audioPath);
+
+        Object list = savedInstanceState.getSerializable(KEY_AUDIO_LIST);
+        if(null!=list) audioKeyList= (HashMap<Integer, Uri>) list;
+
+        list = savedInstanceState.getSerializable(KEY_PHOTO_LIST);
+        if(null!=list) photosKeyList= (HashMap<Integer, Uri>) list;
+
+        list = savedInstanceState.getSerializable(KEY_VIDEO_LIST);
+        if(null!=list) videoKeyList= (HashMap<Integer, Uri>) list;
+
     }
 
     @Override
@@ -278,9 +350,29 @@ public class EvidenciaFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveInstanceState(outState);
+
+
     }
+
+    private void saveInstanceState(Bundle outState) {
+
+        if(null!=mVideoFile) outState.putString(KEY_VIDEO_FILE,mVideoFile.getAbsolutePath());
+
+        if(null!=mPhotoFile) outState.putString(KEY_PHOTO_FILE,mPhotoFile.getAbsolutePath());
+
+        if(null!=mAudioFile) outState.putString(KEY_AUDIO_FILE,mAudioFile.getAbsolutePath());
+
+        if(!videoKeyList.isEmpty()) outState.putSerializable(KEY_VIDEO_LIST, videoKeyList);
+
+        if(!photosKeyList.isEmpty()) outState.putSerializable(KEY_PHOTO_LIST,photosKeyList);
+
+        if(!audioKeyList.isEmpty()) outState.putSerializable(KEY_AUDIO_LIST,audioKeyList);
+
+    }
+
 
     private void launchVideoCameraIntent()
     {
@@ -380,11 +472,16 @@ public class EvidenciaFragment extends Fragment {
                 removeItem(mPhotosView,mPhotosView.getChildAt(i),photosKeyList);
 
 
+        for (int i = 0;i<mAudiosView.getChildCount();i++)
+            if(mAudiosView.getChildAt(i).isSelected())
+                removeItem(mAudiosView,mAudiosView.getChildAt(i),audioKeyList);
+
+
     }
 
     private void removeItem(final LinearLayout view, final View viewToRemove,HashMap list)
     {
-        final Object tag = viewToRemove.getTag();
+        final Integer idView = viewToRemove.getId();
         view.post(new Runnable() {
             @Override
             public void run() {
@@ -393,7 +490,7 @@ public class EvidenciaFragment extends Fragment {
         });
         view.refreshDrawableState();
 
-        list.remove(tag);
+        list.remove(idView);
     }
 
 }

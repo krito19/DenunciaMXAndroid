@@ -17,6 +17,11 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <!--Evidencia Permission-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.location.gps"
         android:required="true" />
@@ -83,6 +88,15 @@
             android:exported="false"
             android:label="@string/title_mis_denuncias"
             android:parentActivityName=".ui.DenunciaMainActivity" >
+        </activity>
+
+        <activity
+            android:name=".ui.SoundRecordActivity"
+            android:exported="false"
+            android:label="@string/title_sound_record_activity"
+            android:parentActivityName=".ui.DenunciarTabsPager"
+            android:theme="@style/Theme.Transparent">
+
         </activity>
 
         <service

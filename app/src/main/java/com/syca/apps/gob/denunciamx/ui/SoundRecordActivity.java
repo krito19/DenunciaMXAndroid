@@ -1,6 +1,19 @@
 package com.syca.apps.gob.denunciamx.ui;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.ImageButton;
+
+import com.syca.apps.gob.denunciamx.R;
+
+import java.io.IOException;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by JARP on 10/1/14.
@@ -11,12 +24,14 @@ public class SoundRecordActivity extends FragmentActivity {
   	public static final String EXTRA_OUTPUT = "OUTPUT_FILENAME";
   	private static String mFileName = null;
   	private boolean recorded = false;
-  	private RecordButton mRecordButton = null;
-  	private MediaRecorder mRecorder = null;
-  	private PlayButton mPlayButton = null;
-  	private MediaPlayer mPlayer = null;
 
-  	private void onRecord(boolean start) 
+  	private MediaRecorder mRecorder = null;
+  	private MediaPlayer mPlayer = null;
+    boolean mStartRecording = true;
+
+    //@InjectView(R.id.btn_action_record_audio) ImageButton mRecordButton ;
+
+  	private void onRecord(boolean start)
   	{
 		  if (start) {
 		  startRecording();
@@ -74,82 +89,38 @@ public class SoundRecordActivity extends FragmentActivity {
 	  mRecorder = null;
 	  recorded = true;
   }
-  // The Record Button & its logic
-  class RecordButton extends Button 
-  {
-		boolean mStartRecording = true;
-		OnClickListener clicker = new OnClickListener() 
-		{
-			public void onClick(View v) 
-			{
-				onRecord(mStartRecording);
-				if (mStartRecording) 
-				{
-					setText("Stop recording");
-				} 
-				else 
-				{
-					Intent data = new Intent();
-					data.putExtra("data", mFileName);
-					setResult(RESULT_OK, data);
-					setText("Start recording");
-				}
-				mStartRecording = !mStartRecording;
-			}
-		};
 
-	  public RecordButton(Context ctx) 
-	  {
-		  super(ctx);
-		  setText("Start recording");
-		  setOnClickListener(clicker);
-	  }
-  }
 
-  // The Play button & its logic
-  class PlayButton extends Button 
-  {
-	  boolean mStartPlaying = true;
-	  OnClickListener clicker = new OnClickListener() 
-	  {
-		  public void onClick(View v) 
-		  {
-		  	onPlay(mStartPlaying);
-		  	if (mStartPlaying) {
-		  	setText("Stop playing");
-		  	} else {
-		  	setText("Start playing");
-		  	}
-		  mStartPlaying = !mStartPlaying;
-		  }
-	  };
+    @OnClick(R.id.btn_action_record_audio)
+    public void onClickRecordButton(ImageButton button)
+    {
 
-	  public PlayButton(Context ctx) {
-	  super(ctx);
-	  setText("Start playing");
-	  setOnClickListener(clicker);
-	  }
-  }
+        onRecord(mStartRecording);
+        if (mStartRecording)
+        {
+            button.setImageDrawable(getResources().getDrawable(R.drawable.ic_stop));
+        }
+        else
+        {
+            Intent data = new Intent();
+            data.putExtra("data", mFileName);
+            setResult(RESULT_OK, data);
+            finish();
+        }
+        mStartRecording = !mStartRecording;
+    }
+
   @Override
   /**
   * Sets up Activity's View
   * @see android.app.Activity#onCreate(android.os.Bundle)
   */
-  public void onCreate(Bundle icicle) 
+  public void onCreate(Bundle icicle)
   {
   	super.onCreate(icicle);
-  	/*LinearLayout ll = new LinearLayout(this);
-  	mRecordButton = new RecordButton(this);
-  	ll.addView(mRecordButton, new LinearLayout.LayoutParams(
-  	ViewGroup.LayoutParams.WRAP_CONTENT,
-  	ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-  	mPlayButton = new PlayButton(this);
-  	ll.addView(mPlayButton, new LinearLayout.LayoutParams(
-  	ViewGroup.LayoutParams.WRAP_CONTENT,
-  	ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-  	setContentView(ll);*/
-  	mRecordButton = new RecordButton(this);
-  	mPlayButton = new PlayButton(this);
+    setContentView(R.layout.activity_sound_record);
+    ButterKnife.inject(this);
+
   	Intent caller = getIntent();
   	mFileName = caller.getStringExtra(EXTRA_OUTPUT);
   	Log.i("zzz", mFileName);

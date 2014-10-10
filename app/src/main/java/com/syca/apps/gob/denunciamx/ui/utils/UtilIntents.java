@@ -59,9 +59,6 @@ public class UtilIntents {
 
     public static Intent makeIntentShowEvidenciaFile( File evidenciaFile)
     {
-        if(!evidenciaFile.exists())
-            return null;
-
         Intent viewEvidenciaIntent = new Intent();
         viewEvidenciaIntent.setAction(Intent.ACTION_VIEW);
         Uri videoUri = Uri.fromFile(evidenciaFile);

@@ -12,7 +12,7 @@
         android:layout_height="64dp"
         android:minHeight="64dp"
         android:scaleType="center"
-        android:id="@+id/image_video_thumbnail"/>
+        android:id="@+id/image_thumbnail"/>
 
     <ImageView
         android:layout_width="wrap_content"
