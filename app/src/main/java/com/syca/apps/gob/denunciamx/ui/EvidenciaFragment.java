@@ -349,6 +349,8 @@ public class EvidenciaFragment extends Fragment {
         return view;
     }
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
