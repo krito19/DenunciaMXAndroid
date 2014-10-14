@@ -11,13 +11,16 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.syca.apps.gob.denunciamx.model.EvidenciaModel;
 import com.syca.apps.gob.denunciamx.ui.EvidenciaFragment;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by JARP on 10/5/14.
@@ -244,5 +247,24 @@ public class MediaStoreSyca {
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         return sdf.format(date);
     }
+
+    public static ObjectMetadata getObjectMetadata(EvidenciaModel evidencia)
+    {
+        ObjectMetadata metadata = new ObjectMetadata();
+
+        Map<String, String> keys =new LinkedHashMap<String, String>();
+
+        keys.put("fileExtension",evidencia.fileExtension);
+        keys.put("mimeType",evidencia.fileMimeType);
+        keys.put("fileName",evidencia.fileName);
+        keys.put("typeEvidencia",evidencia.typeEvidencia);
+        keys.put("uuidInternal",evidencia.uuid.toString());
+        metadata.setUserMetadata(keys);
+
+        metadata.setContentLength(evidencia.length);
+        return metadata;
+    }
+
+
 
 }

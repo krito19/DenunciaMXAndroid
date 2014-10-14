@@ -32,6 +32,8 @@ public class TestAsync extends AsyncTask<File,Boolean,Void>{
             s3Client.createBucket(DENUNCIA_BUCKET);
 
         PutObjectRequest por = new PutObjectRequest( DENUNCIA_BUCKET,file.getName(), file );
+
+
         s3Client.putObject( por );
 
 
