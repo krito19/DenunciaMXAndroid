@@ -4,7 +4,6 @@ package com.syca.apps.gob.denunciamx.ui;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
@@ -27,10 +26,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.syca.apps.gob.denunciamx.R;
-import com.syca.apps.gob.denunciamx.ui.utils.MediaStoreSyca;
-import com.syca.apps.gob.denunciamx.ui.utils.PictureUtils;
-import com.syca.apps.gob.denunciamx.ui.utils.UIUtils;
-import com.syca.apps.gob.denunciamx.ui.utils.UtilIntents;
+import com.syca.apps.gob.denunciamx.utils.MediaStoreSyca;
+import com.syca.apps.gob.denunciamx.utils.PictureUtils;
+import com.syca.apps.gob.denunciamx.utils.UIUtils;
+import com.syca.apps.gob.denunciamx.utils.UtilIntents;
 
 import java.io.File;
 import java.util.HashMap;
@@ -132,37 +131,17 @@ public class EvidenciaFragment extends Fragment {
             if(resultCode== Activity.RESULT_OK)
             {
                 final ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
-                mPhotosView.addView(template);
+
+                //This comes from picker
                 if(null!=data&&null!=data.getData())
                 {
-                    mPhotoFile=getFileFromIntent(data);
+                    mPhotoFile= MediaStoreSyca.getMediaFileFromIntent(mContext, data);
                 }
                 asyncUploader = new TestAsync();
                 asyncUploader.execute(mPhotoFile);
 
                 PictureUtils.setImageScaled(mContext, template, mPhotoFile.getAbsolutePath());
-                template.setId(UIUtils.generateViewId());
-                photosKeyList.put(template.getId(), Uri.fromFile(mPhotoFile));
-                template.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        v.setSelected(true);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                            registerForContextMenu(template);
-                        } else {
-                            getActivity().startActionMode(evidenciaActionMode);
-                        }
-                        return true;
-                    }
-                });
-                template.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = photosKeyList.get(v.getId());
-                        File f = new File(uri.getPath());
-                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
-                    }
-                });
+                addTemplateToParentView(mPhotosView,template,photosKeyList,mPhotoFile);
 
             }
             else if(resultCode==Activity.RESULT_CANCELED)
@@ -184,7 +163,7 @@ public class EvidenciaFragment extends Fragment {
 
                 if(null!=data&&null!=data.getData())
                 {
-                    mVideoFile=getFileFromIntent(data);
+                    mVideoFile= MediaStoreSyca.getMediaFileFromIntent(mContext, data);
                 }
 
                 Bitmap videoThumbnail =
@@ -195,31 +174,7 @@ public class EvidenciaFragment extends Fragment {
 
                 ((ImageView)template.findViewById(R.id.image_thumbnail)).setImageBitmap(videoThumbnail);
 
-                mVideosView.addView(template);
-                template.setId(UIUtils.generateViewId());
-                videoKeyList.put(template.getId(), Uri.fromFile(mVideoFile));
-                template.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        v.setSelected(true);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                            registerForContextMenu(template);
-                        } else {
-
-                            getActivity().startActionMode(evidenciaActionMode);
-                        }
-                        return true;
-                    }
-                });
-                template.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = videoKeyList.get(v.getId());
-                        File f = new File(uri.getPath());
-                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
-                    }
-                });
-
+                addTemplateToParentView(mVideosView,template,videoKeyList,mVideoFile);
 
             }
             else if(resultCode==Activity.RESULT_CANCELED)
@@ -245,33 +200,11 @@ public class EvidenciaFragment extends Fragment {
 
                 if(null!=data&&null!=data.getData())
                 {
-                    mAudioFile=getFileFromIntent(data);
+                    mAudioFile= MediaStoreSyca.getMediaFileFromIntent(mContext, data);
                 }
 
-                mAudiosView.addView(template);
-                template.setId(UIUtils.generateViewId());
-                audioKeyList.put(template.getId(), Uri.fromFile(mAudioFile));
-                template.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        v.setSelected(true);
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-                            registerForContextMenu(template);
-                        } else {
+                addTemplateToParentView(mAudiosView,template,audioKeyList,mAudioFile);
 
-                            getActivity().startActionMode(evidenciaActionMode);
-                        }
-                        return true;
-                    }
-                });
-                template.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Uri uri = audioKeyList.get(v.getId());
-                        File f = new File(uri.getPath());
-                        startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
-                    }
-                });
 
             }
             else if(resultCode==Activity.RESULT_CANCELED)
@@ -288,18 +221,6 @@ public class EvidenciaFragment extends Fragment {
     }
 
 
-
-    public File getFileFromIntent(Intent data)
-    {
-        Uri selectedImage = data.getData();
-        String[] filePathColumn = { MediaStore.Images.Media.DATA };
-        Cursor cursor = mContext.getContentResolver().query(selectedImage,filePathColumn, null, null, null);
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String picturePath = cursor.getString(columnIndex);
-        cursor.close();
-        return  new File(picturePath);
-    }
 
 
 
@@ -378,11 +299,26 @@ public class EvidenciaFragment extends Fragment {
 
         });
 
+        if(null!=savedInstanceState)
+            handleSavedInstanceView();
 
         return view;
     }
 
+    private void handleSavedInstanceView() {
+        if(mAudiosView.getChildCount()!=audioKeyList.size())
+        {
 
+        }
+        if(mPhotosView.getChildCount()!=photosKeyList.size())
+        {
+
+        }
+        if(mVideosView.getChildCount()!=videoKeyList.size())
+        {
+
+        }
+    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -557,5 +493,46 @@ public class EvidenciaFragment extends Fragment {
 
 
     }
+
+    public void addTemplateToParentView(ViewGroup parentView, final View template, final HashMap<Integer,Uri> mediaMapViewUri,File file)
+    {
+
+        //Add Parent View
+        template.setId(UIUtils.generateViewId());
+        parentView.addView(template);
+
+        //Add to list
+        mediaMapViewUri.put(template.getId(), Uri.fromFile(file));
+
+        //Long ClickListener
+        template.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.setSelected(true);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    registerForContextMenu(template);
+                } else {
+                    getActivity().startActionMode(evidenciaActionMode);
+                }
+                return true;
+            }
+        });
+
+        //Normal ClickListener
+        template.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = mediaMapViewUri.get(v.getId());
+                File f = new File(uri.getPath());
+                startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
+            }
+        });
+
+    }
+
+
+
+
+
 
 }
