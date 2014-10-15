@@ -231,11 +231,8 @@ public class MediaStoreSyca {
 
         String dateStr = getFormatDate(date);
 
-        String id = String.format("{0}/{1}/{2}/{3}",dateStr,evidenciaModel.uuid.toString(),
-                                                            evidenciaModel.typeEvidencia,
-                                                            evidenciaModel.fileName);
+        return dateStr+"/"+evidenciaModel.uuid.toString()+"/"+evidenciaModel.typeEvidencia+"/"+evidenciaModel.fileName;
 
-        return id;
     }
 
     // Format used for storing dates in the database.  ALso used for converting those strings

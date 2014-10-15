@@ -101,10 +101,10 @@
         </activity>
 
         <service
-            android:name="service.DenunciaService"
+            android:name="com.syca.apps.gob.denunciamx.service.DenunciaService"
+            android:process=":denunciaservice"
             android:enabled="true"
-            android:exported="true"
-            android:process=":DenunciaService">
+            >
         </service>
     </application>
 

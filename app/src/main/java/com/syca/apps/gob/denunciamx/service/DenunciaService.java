@@ -9,6 +9,7 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -21,6 +22,8 @@ import java.util.UUID;
 
 public class DenunciaService extends Service {
 
+
+    private static final String TAG = "DenunciaService";
     /**
      * Looper associated with the HandlerThread.
      */
@@ -36,17 +39,12 @@ public class DenunciaService extends Service {
     private final static String EXTRA_URI_FILE="Denuncia_Uri_file";
     private final static String EXTRA_FILE_TYPE="Denuncia_Type_file";
 
-
-
-    public DenunciaService() {
-
-
-    }
-
     @Override
     public void onCreate() {
 
         super.onCreate();
+
+        Log.d(TAG,"onCreate");
 
         HandlerThread thread = new HandlerThread("UploadService");
         thread.start();
@@ -60,9 +58,13 @@ public class DenunciaService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
 
+        Log.d(TAG,"onStart");
+
         Message message = mServiceHandler.obtainDownloadMessage(intent,startId);
 
         mServiceHandler.sendMessage(message);
+
+
 
         return START_NOT_STICKY;
 
@@ -74,6 +76,13 @@ public class DenunciaService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
 
+    }
+
+    /**
+     * Hook method called back to shutdown the Looper.
+     */
+    public void onDestroy() {
+        //mServiceLooper.quit();
     }
 
 
@@ -99,6 +108,7 @@ public class DenunciaService extends Service {
 
     private final class ServiceHandler extends Handler {
 
+
         private static final String MY_ACCESS_KEY_ID="";
         private static final String MY_SECRET_KEY="";
         private static final String DENUNCIA_BUCKET ="";
@@ -109,6 +119,8 @@ public class DenunciaService extends Service {
 
         @Override
         public void handleMessage(Message msg) {
+
+            Log.d(TAG,"onHandle");
             uploadFile(msg);
         }
 
@@ -120,15 +132,15 @@ public class DenunciaService extends Service {
 
             String fileType = intent.getStringExtra(EXTRA_FILE_TYPE);
 
-
             EvidenciaModel evidencia =null;
             try {
 
                 evidencia = new EvidenciaModel(UUID.randomUUID(),new File(uriUploadFile.getPath()),fileType);
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG,"Error al crear modelo evidencia");
             }
+            Log.d(TAG,"Despues de crear objeto");
 
 
             uploadToAmazon(evidencia,uriUploadFile);
@@ -147,6 +159,8 @@ public class DenunciaService extends Service {
 
         private void uploadToAmazon(EvidenciaModel model, Uri uri)
         {
+
+            Log.d(TAG,"onSend");
             AmazonS3Client s3Client = new AmazonS3Client( new BasicAWSCredentials( MY_ACCESS_KEY_ID, MY_SECRET_KEY ) );
 
             if(!s3Client.doesBucketExist(DENUNCIA_BUCKET))
@@ -157,6 +171,8 @@ public class DenunciaService extends Service {
             por.setMetadata(MediaStoreSyca.getObjectMetadata(model));
 
             s3Client.putObject( por );
+
+            Log.d(TAG,"onSendFinished");
 
         }
 

@@ -125,6 +125,14 @@
 
         </TableRow>
 
+        <TableRow android:layout_width="24dp"
+            android:layout_height="64dp">
+
+            <Button android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="Subir"
+                android:id="@+id/upload"/>
+            </TableRow>
 
 
 

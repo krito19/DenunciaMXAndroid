@@ -24,7 +24,7 @@ public class EvidenciaModel implements Parcelable {
 
     public EvidenciaModel( UUID uuid, File evidenciaFile, String typeEvidencia) throws Exception {
 
-        if(evidenciaFile.exists())
+        if(!evidenciaFile.exists())
             throw  new Exception("Error el archivo no existe");
 
         this.uuid=uuid;
