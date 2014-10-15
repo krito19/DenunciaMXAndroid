@@ -122,7 +122,7 @@ public class DenunciaContract {
         public static final String COLUMN_COORD_LONG = "long";
         public static final String COLUMN_FECHA_CREACION = "fecha_creacion";
         public static final String COLUMN_FECHA_ACTUALIZACION = "fecha_actualizacion";
-        public static final String COLUMN_FECHA_ESTATUS_ACTUAL = "estatus";
+        public static final String COLUMN_ESTATUS = "estatus";
 
         public static Uri buildDenunciaUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -175,6 +175,7 @@ public class DenunciaContract {
         public static final String TABLE_NAME="evidencia";
         public static final String COLUMN_TYPE="type";
         public static final String COLUMN_ID_INTERNO="id_interno";
+        public static final String COLUMN_ID_ESTATUS_S3="s3_status";
         public static final String COLUMN_FULL_PATH = "path";
         public static final String COLUMN_URI = "uri";
         public static final String COLUMN_PATH_S3 = "s3_path";
