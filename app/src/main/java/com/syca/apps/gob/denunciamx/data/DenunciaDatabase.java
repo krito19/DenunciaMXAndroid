@@ -11,11 +11,14 @@ import android.provider.BaseColumns;
 public class DenunciaDatabase extends SQLiteOpenHelper {
 
 
-    private final static String DATABASE_NAME="denunciamx";
+    public final static String DATABASE_NAME="denunciamx";
 
-    private final static int DATA_VERSION=1;
+    public final static int DATA_VERSION=1;
 
     public DenunciaDatabase(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, DATABASE_NAME, null, DATA_VERSION);
+    }
+    public DenunciaDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATA_VERSION);
     }
 
@@ -57,7 +60,7 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_PATH_S3 + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_TYPE + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI + " TEXT NOT NULL,"
-                + "UNIQUE ("+ DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + "_"
+                + "UNIQUE ("+ DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + ","
                             + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI  +") ON CONFLICT REPLACE) " );
 
         //DenunciaHecho
@@ -66,7 +69,7 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_PREGUNTA + " INTEGER NOT NULL,"
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_RESPUESTA + " TEXT,"
-                + "UNIQUE ("+ DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + "_"
+                + "UNIQUE ("+ DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + ","
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_PREGUNTA  +") ON CONFLICT REPLACE) " );
 
         //DenunciaHistoria
@@ -75,7 +78,6 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_FECHA + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_ESTATUS + " INTEGER NOT NULL,"
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_INTERNO + " TEXT NOT NULL,"
-                + DenunciaContract.DenunciaHistoriaEntry.COLUMN_FECHA + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_MENSAJE + " TEXT "
                 + ")" );
         

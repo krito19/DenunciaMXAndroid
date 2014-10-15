@@ -12,7 +12,7 @@ public class DenunciaModel
         implements Parcelable {
 
 
-    private List<EvidenciaModel> evidenciasList;
+    private List<EvidenciaFileModel> evidenciasList;
 
     public DenunciaModel()
     {

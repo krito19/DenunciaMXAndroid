@@ -14,7 +14,7 @@ import android.util.Log;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.syca.apps.gob.denunciamx.model.EvidenciaModel;
+import com.syca.apps.gob.denunciamx.model.EvidenciaFileModel;
 import com.syca.apps.gob.denunciamx.utils.MediaStoreSyca;
 
 import java.io.File;
@@ -132,10 +132,10 @@ public class DenunciaService extends Service {
 
             String fileType = intent.getStringExtra(EXTRA_FILE_TYPE);
 
-            EvidenciaModel evidencia =null;
+            EvidenciaFileModel evidencia =null;
             try {
 
-                evidencia = new EvidenciaModel(UUID.randomUUID(),new File(uriUploadFile.getPath()),fileType);
+                evidencia = new EvidenciaFileModel(UUID.randomUUID(),new File(uriUploadFile.getPath()),fileType);
 
             } catch (Exception e) {
                 Log.e(TAG,"Error al crear modelo evidencia");
@@ -157,7 +157,7 @@ public class DenunciaService extends Service {
             return  message;
         }
 
-        private void uploadToAmazon(EvidenciaModel model, Uri uri)
+        private void uploadToAmazon(EvidenciaFileModel model, Uri uri)
         {
 
             Log.d(TAG,"onSend");

@@ -12,7 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.syca.apps.gob.denunciamx.model.EvidenciaModel;
+import com.syca.apps.gob.denunciamx.model.EvidenciaFileModel;
 import com.syca.apps.gob.denunciamx.ui.EvidenciaFragment;
 
 import java.io.File;
@@ -218,20 +218,20 @@ public class MediaStoreSyca {
         return new File(path);
     }
 
-    public static String getAmazonStorageS3Id(EvidenciaModel evidenciaModel)
+    public static String getAmazonStorageS3Id(EvidenciaFileModel evidenciaFileModel)
     {
 
-        return getAmazonStorageS3Id(evidenciaModel,new Date());
+        return getAmazonStorageS3Id(evidenciaFileModel,new Date());
     }
 
-    public static String getAmazonStorageS3Id(EvidenciaModel evidenciaModel, Date date)
+    public static String getAmazonStorageS3Id(EvidenciaFileModel evidenciaFileModel, Date date)
     {
 
         //{Fecha}/UUID/TypeFile/FileName
 
         String dateStr = getFormatDate(date);
 
-        return dateStr+"/"+evidenciaModel.uuid.toString()+"/"+evidenciaModel.typeEvidencia+"/"+evidenciaModel.fileName;
+        return dateStr+"/"+ evidenciaFileModel.uuid.toString()+"/"+ evidenciaFileModel.typeEvidencia+"/"+ evidenciaFileModel.fileName;
 
     }
 
@@ -245,7 +245,7 @@ public class MediaStoreSyca {
         return sdf.format(date);
     }
 
-    public static ObjectMetadata getObjectMetadata(EvidenciaModel evidencia)
+    public static ObjectMetadata getObjectMetadata(EvidenciaFileModel evidencia)
     {
         ObjectMetadata metadata = new ObjectMetadata();
 
