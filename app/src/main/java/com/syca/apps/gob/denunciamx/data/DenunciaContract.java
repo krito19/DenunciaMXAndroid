@@ -128,6 +128,24 @@ public class DenunciaContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
+        public static Uri buildDenunciaAndIdInternoUri(String idInterno) {
+            return CONTENT_URI.buildUpon().appendPath(idInterno).appendPath("idInterno").build();
+        }
+
+        public static String getIdInternoFromUri(Uri uri)
+        {
+            return uri.getPathSegments().get(1);
+        }
+
+        public static Uri buildDenunciaAndEstadoUri(String idEstado) {
+            return CONTENT_URI.buildUpon().appendPath(idEstado).appendPath("estado").build();
+        }
+
+        public static String getIdEstadoFromUri(Uri uri)
+        {
+            return uri.getPathSegments().get(1);
+        }
+
         public static Uri buildDenunciaAndFechaActualizacionUri(String fechaActualizacion) {
             return CONTENT_URI.buildUpon().appendQueryParameter(COLUMN_FECHA_ACTUALIZACION,fechaActualizacion).build();
         }
@@ -186,10 +204,21 @@ public class DenunciaContract {
 
         public static Uri buildDenunciaWithIdInternoUri(String idInterno)
         {
-            return CONTENT_URI.buildUpon().appendPath(idInterno).build();
+            return CONTENT_URI.buildUpon().appendPath(idInterno).appendPath("idInterno").build();
         }
 
         public static String getIdInternoFromUri(Uri uri)
+        {
+            return uri.getPathSegments().get(1);
+        }
+
+
+        public static Uri buildDenunciaWithEstadoUri(String idEstado)
+        {
+            return CONTENT_URI.buildUpon().appendPath(idEstado).appendPath("idEstado").build();
+        }
+
+        public static String getIdEstadoFromUri(Uri uri)
         {
             return uri.getPathSegments().get(1);
         }
@@ -218,7 +247,7 @@ public class DenunciaContract {
 
         public static Uri buildHechoWithIdInternoUri(String idInterno)
         {
-            return CONTENT_URI.buildUpon().appendPath(idInterno).build();
+            return CONTENT_URI.buildUpon().appendPath(idInterno).appendPath("idInterno").build();
         }
 
         public static String getIdInternoFromUri(Uri uri)
