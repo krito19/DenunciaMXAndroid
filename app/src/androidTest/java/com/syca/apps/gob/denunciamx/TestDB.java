@@ -9,6 +9,9 @@ import android.util.Log;
 import com.syca.apps.gob.denunciamx.data.DenunciaContract;
 import com.syca.apps.gob.denunciamx.data.DenunciaDatabase;
 import com.syca.apps.gob.denunciamx.model.EstatusDenuncia;
+import com.syca.apps.gob.denunciamx.model.Estatus_S3;
+import com.syca.apps.gob.denunciamx.model.EvidenciaHechoPreguntas;
+import com.syca.apps.gob.denunciamx.model.EvidenciaMediaType;
 
 import java.util.Date;
 import java.util.Map;
@@ -94,7 +97,66 @@ public class TestDB extends AndroidTestCase {
 
         validateCursor(valueCursor,denunciaInfoValues);
 
+        ContentValues fileEvidenciaValues =
+                createDenunciaEvidenciaMediaValues(id_denuncia, "fullPathFile", Estatus_S3.DONE,
+                        "/some/path/in/s3", EvidenciaMediaType.FOTO,
+                        "content://file//storage//emul");
 
+        long idFileEvidencia = db.insert(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,null,fileEvidenciaValues);
+
+
+        assertTrue(-1!=idFileEvidencia);
+
+        valueCursor = db.query(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null);
+
+        validateCursor(valueCursor,fileEvidenciaValues);
+
+
+        //DenunciaHecho
+
+        ContentValues hechoValues = createHechoValues(id_denuncia, EvidenciaHechoPreguntas.PREGUNTA_COMO,"Fue en por ahi de ahi ");
+
+        long idHecho = db.insert(DenunciaContract.DenunciaHechosEntry.TABLE_NAME,null,hechoValues);
+
+        assertTrue(-1!=idHecho);
+
+        valueCursor = db.query(DenunciaContract.DenunciaHechosEntry.TABLE_NAME,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null,
+                                null);
+
+        validateCursor(valueCursor,hechoValues);
+
+
+        //DenunciaHistoria
+
+        ContentValues historiaValues = createHistoriaValues(id_denuncia,DenunciaContract.getDbDateString(new Date()),
+                                                            EstatusDenuncia.DENUNCIA_ENVIADA,"Denuncia procesada con algun mensaje");
+
+        long idHistoria = db.insert(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,null,historiaValues);
+
+        assertTrue(-1!=idHistoria);
+
+        valueCursor = db.query(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        validateCursor(valueCursor,historiaValues);
+
+        db.close();
     }
 
 
@@ -127,6 +189,48 @@ public class TestDB extends AndroidTestCase {
         cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_TOKEN,token);
         return cv;
     }
+
+    static ContentValues createDenunciaEvidenciaMediaValues(String idInterno, String fullPath,
+                                                            int idEstatusS3, String s3Path,
+                                                            int typeFile, String uriFile)
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_FULL_PATH,fullPath);
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_ESTATUS_S3,idEstatusS3);
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO,idInterno);
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_PATH_S3,s3Path);
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_TYPE,typeFile);
+        cv.put(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI,uriFile);
+
+        return cv;
+
+    }
+
+    static ContentValues createHechoValues(String idInterno,int idPregunta,String respuesta) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO,idInterno);
+        cv.put(DenunciaContract.DenunciaHechosEntry.COLUMN_ID_PREGUNTA,idPregunta);
+        cv.put(DenunciaContract.DenunciaHechosEntry.COLUMN_RESPUESTA,respuesta);
+
+        return cv;
+
+    }
+
+    static ContentValues createHistoriaValues(String idInterno, String fecha, int idEstatus,String mensaje) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_INTERNO,idInterno);
+        cv.put(DenunciaContract.DenunciaHistoriaEntry.COLUMN_FECHA,fecha);
+        cv.put(DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_ESTATUS,idEstatus);
+        cv.put(DenunciaContract.DenunciaHistoriaEntry.COLUMN_MENSAJE,mensaje);
+
+        return cv;
+
+    }
+
+
+
 
 
     static void validateCursor(Cursor valueCursor, ContentValues expectedValues) {
