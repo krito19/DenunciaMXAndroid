@@ -1,6 +1,7 @@
 package com.syca.apps.gob.denunciamx.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -87,20 +88,11 @@ public class DenunciaProvider extends ContentProvider {
 
         Log.d(TAG, "uri=" + uri + " match=" + match + " proj=" + Arrays.toString(projection) +
                 " selection=" + selection + " args=" + Arrays.toString(selectionArgs) + ")");
-        Cursor retCursor = null;
+        Cursor retCursor;
+
         switch (match)
         {
-            case USER:
-                retCursor = mOpenHelper.getReadableDatabase().query(
-                        DenunciaContract.UserEntry.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder
-                );
-            case USER_ID:
+            case USER :
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DenunciaContract.UserEntry.TABLE_NAME,
                         projection,
@@ -111,11 +103,40 @@ public class DenunciaProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
-            case USER_MAIL:
+            case USER_ID :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.UserEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.UserEntry._ID + " ='" + ContentUris.parseId(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case USER_MAIL :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.UserEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.UserEntry.COLUMN_EMAIL + " ='" + DenunciaContract.UserEntry.getMailFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                break;
-            case USER_TOKEN:
+            case USER_TOKEN :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.UserEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.UserEntry.COLUMN_TOKEN + " ='" + DenunciaContract.UserEntry.getTokenFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
-            case DENUNCIA:
+            case DENUNCIA :
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DenunciaContract.DenunciaInfoEntry.TABLE_NAME,
                         projection,
@@ -125,13 +146,41 @@ public class DenunciaProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-            case DENUNCIA_ID_SFP:
                 break;
-            case DENUNCIA_ID_INTERNO:
+            case DENUNCIA_ID_SFP :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaInfoEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaInfoEntry.COLUMN_ID_SPF + " ='" + DenunciaContract.DenunciaInfoEntry.getIdSPFFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
-            case DENUNCIA_ESTADO:
+            case DENUNCIA_ID_INTERNO :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaInfoEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO + " ='" + DenunciaContract.DenunciaInfoEntry.getIdInternoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
-            case DENUNCIA_EVIDENCIA:
+            case DENUNCIA_ESTADO :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaInfoEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaInfoEntry.COLUMN_ESTATUS + " ='" + DenunciaContract.DenunciaInfoEntry.getIdEstadoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case DENUNCIA_EVIDENCIA :
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
                         projection,
@@ -141,11 +190,30 @@ public class DenunciaProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-            case DENUNCIA_EVIDENCIA_ID_INTERNO:
                 break;
-            case DENUNCIA_EVIDENCIA_ID_STATUS_S3:
+            case DENUNCIA_EVIDENCIA_ID_INTERNO :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + " ='" + DenunciaContract.DenunciaEvidenciaEntry.getIdInternoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
-            case DENUNCIA_HECHO:
+            case DENUNCIA_EVIDENCIA_ID_STATUS_S3 :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_ESTATUS_S3 + " ='" + DenunciaContract.DenunciaEvidenciaEntry.getIdEstadoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case DENUNCIA_HECHO :
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DenunciaContract.DenunciaHechosEntry.TABLE_NAME,
                         projection,
@@ -155,9 +223,19 @@ public class DenunciaProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-            case DENUNCIA_HECHO_ID_INTERNO:
                 break;
-            case DENUNCIA_HISTORIA:
+            case DENUNCIA_HECHO_ID_INTERNO :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaHechosEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " ='" + DenunciaContract.DenunciaHechosEntry.getIdInternoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case DENUNCIA_HISTORIA :
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,
                         projection,
@@ -167,7 +245,17 @@ public class DenunciaProvider extends ContentProvider {
                         null,
                         sortOrder
                 );
-            case DENUNCIA_HISTORIA_ID_INTERNO:
+                break;
+            case DENUNCIA_HISTORIA_ID_INTERNO :
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DenunciaHechosEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " ='" + DenunciaContract.DenunciaHechosEntry.getIdInternoFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);

@@ -213,7 +213,7 @@ public class DenunciaContract {
         }
 
 
-        public static Uri buildDenunciaWithEstadoUri(String idEstado)
+        public static Uri buildDenunciaWithEstadoS3Uri(String idEstado)
         {
             return CONTENT_URI.buildUpon().appendPath(idEstado).appendPath("idEstado").build();
         }
