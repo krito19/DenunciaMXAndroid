@@ -345,7 +345,33 @@ public class DenunciaProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        Log.d(TAG, "delete(uri=" + uri + ")");
+        int rowsDeleted = 0;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        switch (sUriMatcher.match(uri))
+        {
+            case USER:
+                rowsDeleted = db.delete(DenunciaContract.UserEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            case DENUNCIA:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaInfoEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            case DENUNCIA_EVIDENCIA:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            case DENUNCIA_HECHO:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaHechosEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            case DENUNCIA_HISTORIA:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            default: {
+                throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+            }
+        }
+        getContext().getContentResolver().notifyChange(uri,null);
+
+        return rowsDeleted;
     }
 
     @Override
