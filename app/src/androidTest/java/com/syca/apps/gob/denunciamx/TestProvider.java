@@ -9,7 +9,9 @@ import android.test.AndroidTestCase;
 
 import com.syca.apps.gob.denunciamx.data.DenunciaContract;
 import com.syca.apps.gob.denunciamx.model.EstatusDenuncia;
+import com.syca.apps.gob.denunciamx.model.Estatus_S3;
 import com.syca.apps.gob.denunciamx.model.EvidenciaHechoPreguntas;
+import com.syca.apps.gob.denunciamx.model.EvidenciaMediaType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +25,7 @@ public class TestProvider extends AndroidTestCase {
     /*
 
         ################
-        To pull database if is rooted use
+        To pull database if is device is rooted then
 
         ./adb pull /data/data/com.syca.apps.gob.denunciamx/databases/denunciamx
 
@@ -71,8 +73,8 @@ public class TestProvider extends AndroidTestCase {
     public void testInsertReadProvider()
     {
         //In this case first we will create one Denuncia with:
-        // - Evidencia Info Entry
-        // - All the questions [6]  ref EvidenciaHechoPreguntas
+        // - Evidencia Info Entry : DONE
+        // - All the questions [6]  ref EvidenciaHechoPreguntas : DONE
         // - Evidencia [6]  [2] audio [2] photo [2] audio
         // - Create the first element of the history
 
@@ -129,7 +131,7 @@ public class TestProvider extends AndroidTestCase {
         assertTrue(-1!=_iPregunta);
 
         //Pregunta {3}
-        contentValues = TestDB.createHechoValues(id_denuncia_1, EvidenciaHechoPreguntas.PREGUNTA_DONDE,"");
+        contentValues = TestDB.createHechoValues(id_denuncia_1, EvidenciaHechoPreguntas.PREGUNTA_DONDE,"DONDE");
         preguntas.add(contentValues);
         preguntaUri= contentResolver.insert(DenunciaContract.DenunciaHechosEntry.CONTENT_URI,contentValues);
         _iPregunta = ContentUris.parseId(preguntaUri);
@@ -143,7 +145,7 @@ public class TestProvider extends AndroidTestCase {
         assertTrue(-1!=_iPregunta);
 
         //Pregunta {5}
-        contentValues = TestDB.createHechoValues(id_denuncia_1, EvidenciaHechoPreguntas.PREGUNTA_QUE_SERVICIO,"");
+        contentValues = TestDB.createHechoValues(id_denuncia_1, EvidenciaHechoPreguntas.PREGUNTA_QUE_SERVICIO,"QUE SERVICIO");
         preguntas.add(contentValues);
         preguntaUri= contentResolver.insert(DenunciaContract.DenunciaHechosEntry.CONTENT_URI,contentValues);
         _iPregunta = ContentUris.parseId(preguntaUri);
@@ -152,17 +154,89 @@ public class TestProvider extends AndroidTestCase {
         //Pregunta {6}
         contentValues = TestDB.createHechoValues(id_denuncia_1, EvidenciaHechoPreguntas.PREGUNTA_QUIENES,"Quienes");
         preguntas.add(contentValues);
+        preguntaUri= contentResolver.insert(DenunciaContract.DenunciaHechosEntry.CONTENT_URI,contentValues);
         _iPregunta = ContentUris.parseId(preguntaUri);
         assertTrue(-1!=_iPregunta);
 
         //By now we have inserted 6 preguntas , go look and  query for the 6 results
-
         Uri preguntasWithIdInterno  = DenunciaContract.DenunciaHechosEntry.buildHechoWithIdInternoUri(id_denuncia_1);
-
         cursor = contentResolver.query(preguntasWithIdInterno,null,null,null,null);
 
-        //Base 0
-        assertTrue(5==cursor.getCount());
+        assertTrue(6==cursor.getCount());
+
+        //Evidencia File [6]
+
+        ArrayList<ContentValues> evidenciaFiles = new ArrayList<ContentValues>();
+
+        // {0} Evidencia Foto{1}
+        contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathFoto1", Estatus_S3.SENDING,"BUCKET/FECHA/TIPO/FOTO/1", EvidenciaMediaType.FOTO,"content://file/foto/1");
+        evidenciaFiles.add(contentValues);
+        Uri evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        long idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+        // {1} Evidencia Foto{2}
+        contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathFoto2", Estatus_S3.SENDING,"BUCKET/FECHA/TIPO/FOTO/2", EvidenciaMediaType.FOTO,"content://file/foto/2");
+        evidenciaFiles.add(contentValues);
+        evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+
+        // {2} Evidencia Video{1}
+        contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathvideo1", Estatus_S3.SENDING,"BUCKET/FECHA/TIPO/video/1", EvidenciaMediaType.VIDEO,"content://file/video/1");
+        evidenciaFiles.add(contentValues);
+        evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+
+        // {3} Evidencia Video{2}
+         contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathvideo2", Estatus_S3.SENDING,"BUCKET/FECHA/TIPO/video/2", EvidenciaMediaType.VIDEO,"content://file/video/2");
+        evidenciaFiles.add(contentValues);
+        evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+
+
+        // {4} Evidencia Audio{1}
+        contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathAUDIO1", Estatus_S3.SENDING,"BUCKET/FECHA/TIPO/AUDIO/1", EvidenciaMediaType.AUDIO,"content://file/AUDIO/1");
+        evidenciaFiles.add(contentValues);
+        evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+        // {5} Evidencia Audio{2} --> This is will change the Estatus S3 so we can test another Uri
+        contentValues = TestDB.createDenunciaEvidenciaMediaValues(id_denuncia_1,"fullPathAUDIO2", Estatus_S3.PAUSE,"BUCKET/FECHA/TIPO/AUDIO/2", EvidenciaMediaType.AUDIO,"content://file/AUDIO/2");
+        evidenciaFiles.add(contentValues);
+        evidenciaUri = contentResolver.insert(DenunciaContract.DenunciaEvidenciaEntry.CONTENT_URI,contentValues);
+        idEvidencia = ContentUris.parseId(evidenciaUri);
+        assertTrue(-1!=idEvidencia);
+
+        Uri listEvidenciaWithIdInternoUri = DenunciaContract.DenunciaEvidenciaEntry.buildDenunciaWithIdInternoUri(id_denuncia_1);
+
+        cursor = contentResolver.query(listEvidenciaWithIdInternoUri,null,null,null,null);
+
+        cursor.moveToFirst();
+
+        assertTrue(6==cursor.getCount());
+
+
+        //Get evidencias that s3 status are 'PAUSE' -> Estatus_S3.PAUSE {300}
+
+        Uri evidenciaStatusPause = DenunciaContract.DenunciaEvidenciaEntry.buildDenunciaWithEstadoS3Uri(String.valueOf(Estatus_S3.PAUSE));
+
+        cursor = contentResolver.query(evidenciaStatusPause,null,null,null,null);
+
+        TestDB.validateCursor(cursor,evidenciaFiles.get(5));
+
+
+        // - Create the first element of the history
+
+
+
+
 
     }
 
