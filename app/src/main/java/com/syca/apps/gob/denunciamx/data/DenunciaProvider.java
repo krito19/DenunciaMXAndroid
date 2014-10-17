@@ -351,19 +351,52 @@ public class DenunciaProvider extends ContentProvider {
         switch (sUriMatcher.match(uri))
         {
             case USER:
-                rowsDeleted = db.delete(DenunciaContract.UserEntry.TABLE_NAME,selection,selectionArgs);
+                rowsDeleted = db.delete(DenunciaContract.UserEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case DENUNCIA:
-                rowsDeleted = db.delete(DenunciaContract.DenunciaInfoEntry.TABLE_NAME,selection,selectionArgs);
+                rowsDeleted = db.delete(DenunciaContract.DenunciaInfoEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case DENUNCIA_ID_INTERNO:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaInfoEntry.TABLE_NAME,
+                                        DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO + " = ? " ,//selection
+                                        new String[] {DenunciaContract.DenunciaInfoEntry.getIdInternoFromUri(uri)}//selectionArgs
+                                        );
                 break;
             case DENUNCIA_EVIDENCIA:
-                rowsDeleted = db.delete(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,selection,selectionArgs);
+                rowsDeleted = db.delete(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case DENUNCIA_EVIDENCIA_ID_INTERNO:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
+                                        DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + " = ? ",//selection
+                                        new String [] {DenunciaContract.DenunciaEvidenciaEntry.getIdInternoFromUri(uri)} //SelectionArgs
+                                        );
+                break;
+            case DENUNCIA_EVIDENCIA_ID_STATUS_S3:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaEvidenciaEntry.TABLE_NAME,
+                                        DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_ESTATUS_S3 + " = ? ",//Selection
+                                        new String []{DenunciaContract.DenunciaEvidenciaEntry.getIdEstadoFromUri(uri)} //SelectionArgs
+                                        );
                 break;
             case DENUNCIA_HECHO:
                 rowsDeleted = db.delete(DenunciaContract.DenunciaHechosEntry.TABLE_NAME,selection,selectionArgs);
                 break;
+
+            case DENUNCIA_HECHO_ID_INTERNO:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaHechosEntry.TABLE_NAME,
+                                        DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " = ? ",//Selection
+                                        new String [] {DenunciaContract.DenunciaHechosEntry.getIdInternoFromUri(uri)}//selectionArgs
+                                        );
+                break;
+
             case DENUNCIA_HISTORIA:
-                rowsDeleted = db.delete(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,selection,selectionArgs);
+                rowsDeleted = db.delete(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+
+            case DENUNCIA_HISTORIA_ID_INTERNO:
+                rowsDeleted = db.delete(DenunciaContract.DenunciaHistoriaEntry.TABLE_NAME,
+                                        DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " = ? " , //selection
+                                        new String []{ DenunciaContract.DenunciaHechosEntry.getIdInternoFromUri(uri)}//selectionArgs
+                                        );
                 break;
             default: {
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
@@ -376,7 +409,29 @@ public class DenunciaProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        Log.d(TAG, "update(uri=" + uri + ", values=" + values.toString());
+        int rowsUpdated = 0;
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        switch (sUriMatcher.match(uri)) {
+            case USER_ID :
+                    rowsUpdated = db.update(DenunciaContract.UserEntry.TABLE_NAME,
+                                            values,
+                                            DenunciaContract.UserEntry._ID + " = ?",
+                                            new String[]{ String.valueOf(ContentUris.parseId(uri))});
+                break;
+            case DENUNCIA_ID_INTERNO :
+                    rowsUpdated = db.update(DenunciaContract.UserEntry.TABLE_NAME,
+                                            values,
+                                            DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO+ " = ?",
+                                            new String[]{DenunciaContract.DenunciaInfoEntry.getIdInternoFromUri(uri)});
+                break;
+            default: {
+                throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+            }
+
+        }
+        getContext().getContentResolver().notifyChange(uri,null);
+        return rowsUpdated;
     }
 }
 
