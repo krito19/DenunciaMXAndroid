@@ -37,5 +37,7 @@
     <!--Sound Record Activity -->
     <string name="title_sound_record_activity">Graba tu evidencia</string>
 
+    <!--Provider-->
+    <string name="content_authority">com.syca.apps.gob.denunciamx</string>
 
 </resources>

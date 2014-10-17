@@ -60,6 +60,9 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_PATH_S3 + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_TYPE + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI + " TEXT NOT NULL,"
+                // Set up the foreign key
+                + " FOREIGN KEY (" + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + ") REFERENCES " +
+                    DenunciaContract.DenunciaInfoEntry.TABLE_NAME + " (" + DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO+ "), "
                 + "UNIQUE ("+ DenunciaContract.DenunciaEvidenciaEntry.COLUMN_ID_INTERNO + ","
                             + DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI  +") ON CONFLICT REPLACE) " );
 
@@ -69,6 +72,10 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_PREGUNTA + " INTEGER NOT NULL,"
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_RESPUESTA + " TEXT,"
+                // Set up the foreign key
+                + " FOREIGN KEY (" + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + ") REFERENCES " +
+                    DenunciaContract.DenunciaInfoEntry.TABLE_NAME + " (" + DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO+ "), "
+
                 + "UNIQUE ("+ DenunciaContract.DenunciaHechosEntry.COLUMN_ID_INTERNO + ","
                 + DenunciaContract.DenunciaHechosEntry.COLUMN_ID_PREGUNTA  +") ON CONFLICT REPLACE) " );
 
@@ -78,7 +85,10 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_FECHA + " TEXT NOT NULL,"
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_ESTATUS + " INTEGER NOT NULL,"
                 + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_INTERNO + " TEXT NOT NULL,"
-                + DenunciaContract.DenunciaHistoriaEntry.COLUMN_MENSAJE + " TEXT "
+                + DenunciaContract.DenunciaHistoriaEntry.COLUMN_MENSAJE + " TEXT ,"
+                // Set up the foreign key
+                + " FOREIGN KEY (" + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_INTERNO + ") REFERENCES " +
+                    DenunciaContract.DenunciaInfoEntry.TABLE_NAME + " (" + DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO+ ") "
                 + ")" );
         
 
