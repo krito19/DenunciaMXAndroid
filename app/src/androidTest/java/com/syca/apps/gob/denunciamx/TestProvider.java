@@ -83,6 +83,7 @@ public class TestProvider extends AndroidTestCase {
         ContentResolver contentResolver = mContext.getContentResolver();
 
         String today = DenunciaContract.getDbDateString(new Date());
+
         ContentValues contentValues = TestDB.createDenunciaInfoValues(token,
                                                                      EstatusDenuncia.DENUNCIA_EN_PROCESO,
                                                                      today ,
@@ -220,7 +221,7 @@ public class TestProvider extends AndroidTestCase {
 
         cursor.moveToFirst();
 
-        assertTrue(6==cursor.getCount());
+        assertTrue(6 == cursor.getCount());
 
 
         //Get evidencias that s3 status are 'PAUSE' -> Estatus_S3.PAUSE {300}
@@ -234,6 +235,38 @@ public class TestProvider extends AndroidTestCase {
 
         // - Create the first element of the history
 
+        contentValues = TestDB.createHistoriaValues(id_denuncia_1,today,EstatusDenuncia.DENUNCIA_EN_PROCESO,"Se esta enviando su denuncia");
+
+        Uri primerHistoriaDenunciaUri= contentResolver.insert(DenunciaContract.DenunciaHistoriaEntry.CONTENT_URI,contentValues);
+
+        long idHistoriaDenunciaUri = ContentUris.parseId(primerHistoriaDenunciaUri);
+
+        assertTrue(-1!=idHistoriaDenunciaUri);
+
+
+        //Insert a second Denuncia just for testing another URI but this will have a status with 'Denuncia_Recibida'
+
+        contentValues = TestDB.createDenunciaInfoValues(token,
+                EstatusDenuncia.DENUNCIA_RECIBIDA,
+                today ,
+                today,
+                id_denuncia_2,
+                "");
+
+
+
+        insertedDenunciaUri= contentResolver.insert(DenunciaContract.DenunciaInfoEntry.CONTENT_URI,contentValues);
+
+        long _idDenunciaInfo2 = ContentUris.parseId(insertedDenunciaUri);
+
+        assertTrue(_idDenunciaInfo2!=_idDenunciaInfo);
+
+
+        Uri denunciaWithStatusDenunciaRecibida = DenunciaContract.DenunciaInfoEntry.buildDenunciaAndEstadoUri(String.valueOf(EstatusDenuncia.DENUNCIA_RECIBIDA));
+
+        cursor = contentResolver.query(denunciaWithStatusDenunciaRecibida,null,null,null,null);
+
+        TestDB.validateCursor(cursor,contentValues);
 
 
 
@@ -242,6 +275,48 @@ public class TestProvider extends AndroidTestCase {
 
     public void testUpdateDenuncia()
     {
+
+    }
+
+
+    public void testType()
+    {
+
+        ContentResolver mContentResolver = mContext.getContentResolver();
+
+        //User
+        String type = mContentResolver.getType(DenunciaContract.UserEntry.CONTENT_URI);
+
+        assertEquals(DenunciaContract.UserEntry.CONTENT_TYPE,type);
+
+        //content::/com.syca.apps.gob.denunciamx/user/UUID/token
+        String typeTokenUri = mContentResolver.getType(DenunciaContract.UserEntry.buildUserAndTokenUri(UUID.randomUUID().toString()));
+
+        //vnd.android.cursor.item/com.syca.apps.gob.denunciamx/user
+        assertEquals(DenunciaContract.UserEntry.CONTENT_ITEM_TYPE,typeTokenUri);
+
+        //DenunciaInfo
+        type = mContentResolver.getType(DenunciaContract.DenunciaInfoEntry.CONTENT_URI);
+
+        assertEquals(DenunciaContract.DenunciaInfoEntry.CONTENT_TYPE,type);
+
+
+
+
+        String estado = String.valueOf(EstatusDenuncia.DENUNCIA_RECIBIDA);
+
+
+        //content://com.syca.apps.gob.denunciamx/denunciainfo/2/estado
+        Uri uri  = DenunciaContract.DenunciaInfoEntry.buildDenunciaAndEstadoUri(estado);
+
+        //
+        String typeDenunciaInfoIdEstado = mContentResolver.getType(uri);
+
+        //matcher.addURI(AUTHORITY,"denunciainfo/#/estado",DENUNCIA_ESTADO)
+        assertEquals(DenunciaContract.DenunciaInfoEntry.CONTENT_TYPE,typeDenunciaInfoIdEstado);
+
+
+
 
     }
 

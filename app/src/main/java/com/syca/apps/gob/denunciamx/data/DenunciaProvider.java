@@ -57,9 +57,10 @@ public class DenunciaProvider extends ContentProvider {
         matcher.addURI(AUTHORITY,"user/*/token",USER_TOKEN);
 
         matcher.addURI(AUTHORITY,"denunciainfo",DENUNCIA);
+        matcher.addURI(AUTHORITY,"denunciainfo/#/estado",DENUNCIA_ESTADO);
         matcher.addURI(AUTHORITY,"denunciainfo/*/idInterno",DENUNCIA_ID_INTERNO);
         matcher.addURI(AUTHORITY,"denunciainfo/*/sfp",DENUNCIA_ID_SFP);
-        matcher.addURI(AUTHORITY,"denunciainfo/#/estado",DENUNCIA_ESTADO);
+
 
         matcher.addURI(AUTHORITY,"evidencias",DENUNCIA_EVIDENCIA);
         matcher.addURI(AUTHORITY,"evidencias/*/idInterno",DENUNCIA_EVIDENCIA_ID_INTERNO);
@@ -268,7 +269,8 @@ public class DenunciaProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
 
-        switch (sUriMatcher.match(uri))
+        int match = sUriMatcher.match(uri);
+        switch (match)
         {
             case USER:
                 return DenunciaContract.UserEntry.CONTENT_TYPE;
