@@ -98,6 +98,17 @@ public class EvidenciaFragment extends Fragment {
     private static String KEY_PHOTO_LIST="KEY_VIDEO_LIST";
     private static String KEY_AUDIO_LIST="KEY_VIDEO_LIST";
 
+    private MediaInfoFile evidenciaFiles = new MediaInfoFile();
+
+    public class MediaInfoFile
+    {
+        public HashMap<Integer,Uri> photosKeyList;
+        public HashMap<Integer,Uri> videoKeyList;
+        public HashMap<Integer,Uri> audioKeyList;
+    }
+
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -220,11 +231,6 @@ public class EvidenciaFragment extends Fragment {
         }
 
     }
-
-
-
-
-
 
     @Override
     public void onAttach(Activity activity) {
@@ -542,6 +548,18 @@ public class EvidenciaFragment extends Fragment {
 
     }
 
+
+    public MediaInfoFile getEvidenciaFiles()
+    {
+        evidenciaFiles.audioKeyList= new HashMap<Integer, Uri>();
+        evidenciaFiles.photosKeyList  = new HashMap<Integer, Uri>();
+        evidenciaFiles.videoKeyList = new HashMap<Integer, Uri>();
+        evidenciaFiles.audioKeyList.putAll(audioKeyList);
+        evidenciaFiles.photosKeyList.putAll(photosKeyList);
+        evidenciaFiles.videoKeyList.putAll(videoKeyList);
+
+        return evidenciaFiles;
+    }
 
 
 

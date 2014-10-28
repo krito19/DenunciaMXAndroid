@@ -5,6 +5,7 @@ package com.syca.apps.gob.denunciamx.model;
  */
 public class EstatusDenuncia {
 
+    public static final int DENUNCIA_POR_ENVIAR=0;
     public static final int DENUNCIA_ENVIADA=1;
     public static final int DENUNCIA_RECIBIDA=2;
     public static final int DENUNCIA_EN_PROCESO=3;

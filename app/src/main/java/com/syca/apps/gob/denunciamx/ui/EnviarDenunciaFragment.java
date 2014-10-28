@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 
 import com.syca.apps.gob.denunciamx.R;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EnviarDenunciaFragment#newInstance} factory method to
@@ -17,6 +20,14 @@ import com.syca.apps.gob.denunciamx.R;
  *
  */
 public class EnviarDenunciaFragment extends Fragment {
+
+
+    public interface CallbackEnviarDenuncia {
+        public void onFinishDenuncia();
+    }
+
+    // @InjectView(R.id.btn_enviar_denuncia) Button bntEnviarDenuncia;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,7 +72,17 @@ public class EnviarDenunciaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_enviar_denuncia, container, false);
+       View view = inflater.inflate(R.layout.fragment_enviar_denuncia, container, false);
+       ButterKnife.inject(this, view);
+       return view;
+    }
+
+    @OnClick({R.id.btn_enviar_denuncia})
+    public void clickFinishDenuncia()
+    {
+        //Call the activity all the work is done
+        //This call does not validate the data in the denuncia context
+        ((CallbackEnviarDenuncia)getActivity()).onFinishDenuncia();
     }
 
 

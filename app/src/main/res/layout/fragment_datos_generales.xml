@@ -79,6 +79,7 @@
                     android:textColor="#fafafa"
                     android:background="@drawable/rectangle_edit_text"
                     android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"
                     />
                 <EditText
                     android:id="@+id/donde_denuncia_edit_text"
@@ -93,7 +94,8 @@
                     android:padding="5dp"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"/>
                 <EditText
                     android:id="@+id/cuando_denuncia_edit_text"
                     android:layout_width="fill_parent"
@@ -107,7 +109,8 @@
                     android:textColor="#fafafa"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"/>
                 <EditText
                     android:id="@+id/como_denuncia_edit_text"
                     android:layout_width="fill_parent"
@@ -121,7 +124,8 @@
                     android:textColor="#fafafa"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"/>
                 <EditText
                     android:id="@+id/quienes_denuncia_edit_text"
                     android:layout_width="fill_parent"
@@ -135,7 +139,8 @@
                     android:textColor="#fafafa"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"/>
                 <EditText
                     android:id="@+id/servicio_denuncia_edit_text"
                     android:layout_width="fill_parent"
@@ -149,7 +154,8 @@
                     android:textColor="#fafafa"
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:textCursorDrawable="@null"/>
 
             </LinearLayout>
 

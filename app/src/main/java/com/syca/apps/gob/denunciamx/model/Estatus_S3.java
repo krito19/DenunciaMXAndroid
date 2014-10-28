@@ -10,4 +10,5 @@ public class Estatus_S3 {
     public static final int PAUSE=300;
     public static final int ERROR=400;
     public static final int RESTART=500;
+    public static final int READY_TO_SEND=600;
 }

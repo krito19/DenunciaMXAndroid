@@ -12,13 +12,14 @@ import android.widget.TabHost;
 import android.widget.TabWidget;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.data.DenunciaPersistenceHelper;
 
 import java.util.ArrayList;
 
 /**
  * Created by JARP on 10/1/14.
  */
-public class DenunciarTabsPager extends FragmentActivity {
+public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunciaFragment.CallbackEnviarDenuncia {
     TabHost mTabHost;
     ViewPager mViewPager;
     TabsAdapter mTabsAdapter;
@@ -59,6 +60,29 @@ public class DenunciarTabsPager extends FragmentActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("tab", mTabHost.getCurrentTabTag());
+    }
+
+    @Override
+    public void onFinishDenuncia() {
+
+        DatosGeneralesFragment.DenunciaInfo info= ((DatosGeneralesFragment)getSupportFragmentManager().getFragments().get(0)).getInfoDenunciaQuestions();
+
+        EvidenciaFragment.MediaInfoFile evidencias =
+                ((EvidenciaFragment)getSupportFragmentManager().getFragments().get(1)).getEvidenciaFiles();
+
+        //if(!isValidDenuncia(info, evidencias))
+        //    return;
+
+        DenunciaPersistenceHelper persistenceHelper = new DenunciaPersistenceHelper(this);
+
+        persistenceHelper.persistNewDenuncia(info,evidencias);
+
+
+    }
+
+    private boolean isValidDenuncia(DatosGeneralesFragment.DenunciaInfo info, EvidenciaFragment.MediaInfoFile evidencias) {
+        //TODO:Validate the minimum data we need to process the denuncia
+        return true;
     }
 
     /**
@@ -143,7 +167,6 @@ public class DenunciarTabsPager extends FragmentActivity {
         public void onTabChanged(String tabId) {
             int position = mTabHost.getCurrentTab();
             mViewPager.setCurrentItem(position);
-
         }
 
         @Override
