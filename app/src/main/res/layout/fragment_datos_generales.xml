@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.syca.apps.gob.denunciamx.ui.ui.DatosGeneralesFragment">
+    tools:context="com.syca.apps.gob.denunciamx.ui.ui.DatosGeneralesFragment"
+    >
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,6 +38,10 @@
                             android:textColorHint="#fafafa"
                             android:textColor="#fafafa"/>
 
+
+
+
+
                     <RadioGroup
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -64,6 +69,21 @@
                             android:id="@+id/denuncia_publica_negative"/>
                         </RadioGroup>
 
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_quiero_denunciar_a"
+                    android:padding="5dp"
+                    android:textColor="#fafafa"/>
+
+                <Spinner
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner_dependencias"
+                    android:textColor="#fafafa"
+                    android:padding="5dp">
+
+                    </Spinner>
 
                 <EditText
                     android:id="@+id/que_denuncia_edit_text"

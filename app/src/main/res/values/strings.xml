@@ -39,7 +39,7 @@
 
     <!--Provider-->
     <string name="content_authority">com.syca.apps.gob.denunciamx</string>
-
+    <string name="title_quiero_denunciar_a">QUIERO DENUNCIAR A UN FUNCIONARIO(S) QUE TRABAJA EN:</string>
 
 
 </resources>

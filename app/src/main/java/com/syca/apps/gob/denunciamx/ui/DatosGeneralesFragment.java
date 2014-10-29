@@ -1,15 +1,25 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.data.DenunciaContract;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -30,6 +40,7 @@ public class DatosGeneralesFragment extends Fragment {
     public class DenunciaInfo
     {
         public Boolean isAnonima;
+        public int idDependencia;
         public String queDenuncia;
         public String dondeDenuncia;
         public String cuandoDenuncia;
@@ -49,6 +60,8 @@ public class DatosGeneralesFragment extends Fragment {
     @InjectView(R.id.como_denuncia_edit_text)  EditText comoDenunciaEditText;
     @InjectView(R.id.quienes_denuncia_edit_text) EditText quienesDenunciaEditText;
     @InjectView(R.id.servicio_denuncia_edit_text) EditText servicioDenunciaEditText;
+    @InjectView(R.id.spinner_dependencias) Spinner dependeciaSpinner;
+
 
 
     private static final String KEY_QUE="KEY_QUE";
@@ -66,6 +79,45 @@ public class DatosGeneralesFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    AsyncTask<Void,Void,Cursor> DependenciasTask = new AsyncTask<Void, Void, Cursor>() {
+
+        private final int DEPENDENCIA_NAME=2;
+        @Override
+        protected Cursor doInBackground(Void... params) {
+
+            ContentResolver contentResolver = getActivity().getContentResolver();
+
+            Uri dependenciasUri = DenunciaContract.DependenciaEntry.CONTENT_URI;
+
+            String orderBy = DenunciaContract.DependenciaEntry.COLUMN_ID_DEPENDENCIA + " ASC ";
+
+            return contentResolver.query(dependenciasUri,null,null,null,orderBy);
+
+
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+
+            List<String> dependenciaList = new ArrayList<String>();
+
+            if(cursor.moveToFirst()) {
+                do {
+                    dependenciaList.add(getDependecia(cursor));
+                }while (cursor.moveToNext());
+                ArrayAdapter<String> dependenciaAdapter =
+                        new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, dependenciaList);
+                dependeciaSpinner.setAdapter(dependenciaAdapter);
+            }
+        }
+
+        private String getDependecia(Cursor cursor) {
+            return  cursor.getString(DEPENDENCIA_NAME);
+        }
+
+
+    };
 
 
     /**
@@ -106,8 +158,10 @@ public class DatosGeneralesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_datos_generales, container, false);
         ButterKnife.inject(this, view);
+        DependenciasTask.execute();
         if(null!=savedInstanceState)
-            hadleInstance(savedInstanceState);
+            handleInstance(savedInstanceState);
+
         return view;
     }
 
@@ -117,6 +171,8 @@ public class DatosGeneralesFragment extends Fragment {
     {
         if(R.id.denuncia_publica_positive== denuciaTipoAnonima.getCheckedRadioButtonId())
             info.isAnonima=true;
+        //TODO : get dependencia from spinner
+        //dependeciaSpinner.getSelectedItem()
         info.comoDenuncia=comoDenunciaEditText.getText().toString();
         info.cuandoDenuncia=cuandoDenunciaEditText.getText().toString();
         info.dondeDenuncia=dondeDenunciaEditText.getText().toString();
@@ -129,10 +185,10 @@ public class DatosGeneralesFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        saveInstace(outState);
+        saveInstance(outState);
     }
 
-    private void saveInstace(Bundle outState) {
+    private void saveInstance(Bundle outState) {
 
         outState.putString(KEY_QUE,queDenunciaEditText.getText().toString());
 
@@ -148,7 +204,7 @@ public class DatosGeneralesFragment extends Fragment {
 
     }
 
-    private void hadleInstance(Bundle savedInstance)
+    private void handleInstance(Bundle savedInstance)
     {
 
         if(savedInstance.containsKey(KEY_QUE))
@@ -170,5 +226,6 @@ public class DatosGeneralesFragment extends Fragment {
         servicioDenunciaEditText.setText(savedInstance.getString(KEY_SERVICIO));
 
     }
+
 
 }
