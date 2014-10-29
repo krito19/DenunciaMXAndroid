@@ -269,6 +269,14 @@ public class TestProvider extends AndroidTestCase {
         TestDB.validateCursor(cursor,contentValues);
 
 
+        Uri dependenciaUri = DenunciaContract.DependenciaEntry.buildDependenciaWithIdDependenciaUri("2");
+
+        cursor = contentResolver.query(dependenciaUri,null,null,null,null);
+
+        contentValues =  TestDB.createDependenciaValues(2,2, "ADMINISTRACIÓN PORTUARIA INTEGRAL DE ALTAMIRA, S.A. DE C.V.");
+
+        TestDB.validateCursor(cursor,contentValues);
+
 
 
     }
@@ -319,6 +327,8 @@ public class TestProvider extends AndroidTestCase {
 
 
     }
+
+
 
 
 }

@@ -45,6 +45,9 @@ public class DenunciaProvider extends ContentProvider {
     private static final int DENUNCIA_HISTORIA = 500;
     private static final int DENUNCIA_HISTORIA_ID_INTERNO = 501;
 
+    private static final int DEPENDENCIA = 600;
+    private static final int DEPENDENCIA_ID= 601;
+
     private static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -71,6 +74,9 @@ public class DenunciaProvider extends ContentProvider {
 
         matcher.addURI(AUTHORITY,"historia",DENUNCIA_HISTORIA);
         matcher.addURI(AUTHORITY,"historia/*/idInterno",DENUNCIA_HISTORIA_ID_INTERNO);
+
+        matcher.addURI(AUTHORITY,"dependencia",DEPENDENCIA);
+        matcher.addURI(AUTHORITY,"dependencia/#",DEPENDENCIA_ID);
 
 
         return matcher;
@@ -258,6 +264,30 @@ public class DenunciaProvider extends ContentProvider {
                         sortOrder
                 );
                 break;
+            case DEPENDENCIA:
+
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DependenciaEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+
+            case DEPENDENCIA_ID:
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        DenunciaContract.DependenciaEntry.TABLE_NAME,
+                        projection,
+                        DenunciaContract.DependenciaEntry.COLUMN_ID_DEPENDENCIA + " ='" + DenunciaContract.DependenciaEntry.getIdDependenciaFromUri(uri)+"'",
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -302,6 +332,10 @@ public class DenunciaProvider extends ContentProvider {
                 return DenunciaContract.DenunciaHistoriaEntry.CONTENT_TYPE;
             case DENUNCIA_HISTORIA_ID_INTERNO:
                 return DenunciaContract.DenunciaHistoriaEntry.CONTENT_TYPE;
+            case DEPENDENCIA:
+                return DenunciaContract.DependenciaEntry.CONTENT_TYPE;
+            case DEPENDENCIA_ID:
+                return DenunciaContract.DependenciaEntry.CONTENT_ITEM_TYPE;
             default:
                 throw  new UnsupportedOperationException("Uknown uri" + uri);
         }

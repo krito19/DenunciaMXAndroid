@@ -3,7 +3,11 @@ package com.syca.apps.gob.denunciamx.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.provider.BaseColumns;
+import android.support.v4.util.ArrayMap;
+
+import java.util.Map;
 
 /**
  * Created by JARP on 10/15/14.
@@ -90,12 +94,47 @@ public class DenunciaDatabase extends SQLiteOpenHelper {
                 + " FOREIGN KEY (" + DenunciaContract.DenunciaHistoriaEntry.COLUMN_ID_INTERNO + ") REFERENCES " +
                     DenunciaContract.DenunciaInfoEntry.TABLE_NAME + " (" + DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO+ ") "
                 + ")" );
-        
+
+        //Dependencia
+        db.execSQL("CREATE TABLE " + DenunciaContract.DependenciaEntry.TABLE_NAME + " ("
+                + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + DenunciaContract.DependenciaEntry.COLUMN_ID_DEPENDENCIA + " INTEGER NOT NULL,"
+                + DenunciaContract.DependenciaEntry.COLUMN_DEPENDENCIA + " TEXT NOT NULL"
+                + ")" );
+
+
+        insertBulkDependencias(db);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    public void insertBulkDependencias(SQLiteDatabase db)
+    {
+        String sql =
+                "INSERT INTO " + DenunciaContract.DependenciaEntry.TABLE_NAME + " VALUES (?, ?, ? );" ; //IdDependencia & Dependencia
+
+        SQLiteStatement statement = db.compileStatement(sql);
+
+        db.beginTransaction();
+
+        ArrayMap <Integer,String> dependencias = DenunciaContract.DependenciaEntry.getDependencias();
+
+        for(Map.Entry<Integer,String> dependencia : dependencias.entrySet())
+        {
+
+            statement.clearBindings();
+            statement.bindLong(1,dependencia.getKey());
+            statement.bindLong(2,dependencia.getKey());
+            statement.bindString(3,dependencia.getValue());
+            statement.execute();
+        }
+
+        db.setTransactionSuccessful();
+        db.endTransaction();
 
     }
 }

@@ -156,9 +156,24 @@ public class TestDB extends AndroidTestCase {
 
         validateCursor(valueCursor,historiaValues);
 
+
+
+
+        valueCursor= db.query(DenunciaContract.DependenciaEntry.TABLE_NAME,null,null,null,null,null,null);
+        assertEquals(DenunciaContract.DependenciaEntry.getDependencias().size(),valueCursor.getCount());
         db.close();
     }
 
+
+    static ContentValues createDependenciaValues(int _id, int idDependencia, String dependencia) {
+
+        ContentValues cv = new ContentValues();
+        cv.put(DenunciaContract.DependenciaEntry._ID,_id);
+        cv.put(DenunciaContract.DependenciaEntry.COLUMN_ID_DEPENDENCIA,idDependencia);
+        cv.put(DenunciaContract.DependenciaEntry.COLUMN_DEPENDENCIA,dependencia);
+        return cv;
+
+    }
 
     static ContentValues createAccountUserValues()
     {
