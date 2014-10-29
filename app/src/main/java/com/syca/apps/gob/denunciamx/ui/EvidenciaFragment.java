@@ -34,6 +34,7 @@ import com.syca.apps.gob.denunciamx.utils.UtilIntents;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -91,12 +92,12 @@ public class EvidenciaFragment extends Fragment {
     HashMap<Integer,Uri> audioKeyList;
 
     private static String KEY_VIDEO_FILE="KEY_VIDEO_FILE";
-    private static String KEY_PHOTO_FILE="KEY_VIDEO_FILE";
-    private static String KEY_AUDIO_FILE="KEY_VIDEO_FILE";
+    private static String KEY_PHOTO_FILE="KEY_PHOTO_FILE";
+    private static String KEY_AUDIO_FILE="KEY_AUDIO_FILE";
 
     private static String KEY_VIDEO_LIST="KEY_VIDEO_LIST";
-    private static String KEY_PHOTO_LIST="KEY_VIDEO_LIST";
-    private static String KEY_AUDIO_LIST="KEY_VIDEO_LIST";
+    private static String KEY_PHOTO_LIST="KEY_PHOTO_LIST";
+    private static String KEY_AUDIO_LIST="KEY_AUDIO_LIST";
 
     private MediaInfoFile evidenciaFiles = new MediaInfoFile();
 
@@ -317,15 +318,31 @@ public class EvidenciaFragment extends Fragment {
         //TODO:add views to layout
         if(mAudiosView.getChildCount()!=audioKeyList.size())
         {
-
+            mAudiosView.removeAllViews();
+            for(Map.Entry<Integer, Uri> set : photosKeyList.entrySet())
+            {
+                setExistingAudioToLayout(set.getKey());
+            }
         }
         if(mPhotosView.getChildCount()!=photosKeyList.size())
         {
+            mPhotosView.removeAllViews();
 
+            for(Map.Entry<Integer, Uri> set : photosKeyList.entrySet())
+            {
+                File f = new File(MediaStoreSyca.getPath(mContext, set.getValue()));
+
+                setExistingImageToLayout(f,set.getKey());
+            }
         }
         if(mVideosView.getChildCount()!=videoKeyList.size())
         {
-
+            mVideosView.removeAllViews();
+            for(Map.Entry<Integer, Uri> set : videoKeyList.entrySet())
+            {
+                File f = new File(MediaStoreSyca.getPath(mContext, set.getValue()));
+                setExistingVideoToLayout(f, set.getKey());
+            }
         }
     }
 
@@ -336,6 +353,46 @@ public class EvidenciaFragment extends Fragment {
 
 
     }
+
+    public void setExistingImageToLayout(File photoFile, int idView)
+    {
+        final ImageView template = (ImageView) getActivity().getLayoutInflater().inflate(R.layout.image_template,mPhotosView,false);
+        PictureUtils.setImageScaled(mContext, template, photoFile.getAbsolutePath());
+        template.setId(idView);
+        addExistingTemplateToParentView(mPhotosView, template, photosKeyList);
+
+    }
+
+    public void setExistingAudioToLayout( int idView)
+    {
+
+
+
+        final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
+
+        ((ImageView)template.findViewById(R.id.image_thumbnail)).
+                setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_audio_wave));
+
+        template.setId(idView);
+
+        addExistingTemplateToParentView(mAudiosView,template,audioKeyList);
+
+    }
+
+
+    public void setExistingVideoToLayout(File videoFile, int idView)
+    {
+        final FrameLayout template = (FrameLayout) mContext.getLayoutInflater().inflate(R.layout.video_template,mVideosView,false);
+        template.setId(idView);
+        Bitmap videoThumbnail =
+                ThumbnailUtils.createVideoThumbnail(videoFile.getPath(), MediaStore.Images.Thumbnails.MINI_KIND);
+        ((ImageView)template.findViewById(R.id.image_thumbnail)).setImageBitmap(videoThumbnail);
+
+        addExistingTemplateToParentView(mVideosView,template,videoKeyList);
+
+    }
+
+
 
     private void saveInstanceState(Bundle outState) {
 
@@ -501,6 +558,34 @@ public class EvidenciaFragment extends Fragment {
         startActivityForResult(Intent.createChooser(intentPickMediaFile, "Selecciona el archivo"), resultRequest);
 
 
+    }
+
+
+    public void addExistingTemplateToParentView(ViewGroup parentView, final View template, final HashMap<Integer,Uri> mediaMapViewUri) {
+        parentView.addView(template);
+        //Long ClickListener
+        template.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.setSelected(true);
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+                    registerForContextMenu(template);
+                } else {
+                    getActivity().startActionMode(evidenciaActionMode);
+                }
+                return true;
+            }
+        });
+
+        //Normal ClickListener
+        template.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = mediaMapViewUri.get(v.getId());
+                File f = new File(uri.getPath());
+                startActivity(UtilIntents.makeIntentShowEvidenciaFile(f));
+            }
+        });
     }
 
     public void addTemplateToParentView(ViewGroup parentView, final View template, final HashMap<Integer,Uri> mediaMapViewUri,File file)

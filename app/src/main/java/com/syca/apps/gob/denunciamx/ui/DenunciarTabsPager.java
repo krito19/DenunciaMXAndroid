@@ -77,6 +77,8 @@ public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunc
 
         persistenceHelper.persistNewDenuncia(info,evidencias);
 
+        //TODO: send to the indicate activity
+        finish();
 
     }
 
