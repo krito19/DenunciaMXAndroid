@@ -50,7 +50,7 @@ public class DenunciaPersistenceHelper {
 
         insertEvidencias(idDenuncia,todayDate,evidenciaFiles);
 
-        insertHistoria(idDenuncia,today,EstatusDenuncia.DENUNCIA_POR_ENVIAR,"Su denucia esta por enviar");
+        insertHistoria(idDenuncia,today,EstatusDenuncia.DENUNCIA_POR_ENVIAR,"Su denuncia esta por enviar");
 
     }
 

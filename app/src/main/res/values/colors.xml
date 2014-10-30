@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="morado">#79469b</color>
+    <color name="amarillo">#debb25</color>
+    <color name="verde">#008574</color>
+    <color name="gris">#1c151d</color>
 </resources>

@@ -21,12 +21,13 @@
     <string name="title_tabhost_ubicacion_fragment">UBICACION</string>
     <string name="title_tabhost_enviar_fragment">ENVIAR</string>
 
-    <!--Fragment Datos Generaels {Denunica}-->
+    <!--Fragment Datos Generales {Denuncia}-->
     <string name="title_datos_generales">DATOS GENERALES</string>
     <string name="title_desea_presentar_su_queja">¿DESEA PRESENTAR SU DENUNCIA DE MANERA ANÓNIMA?</string>
     <string name="title_que">¿QUÉ LE PASÓ, QUÉ VIO O DE QUÉ SE ENTERÓ? </string>
     <string name="title_donde">¿DÓNDE SUCEDIERON LOS HECHOS QUE DENUNCIA?  </string>
-    <string name="title_cuando">¿CUÁNDO OCURRIERON LOS HECHOS ?   </string>
+    <string name="title_cuando_fecha">FECHA DE LOS HECHOS</string>
+    <string name="title_cuando_hora">HORA DE LOS HECHOS</string>
     <string name="title_como">¿CÓMO SE LLEVARON A CABO ?  </string>
     <string name="title_quienes">¿QUIÉNES LO HICIERON ? </string>
     <string name="title_que_servicio">¿QUÉ TRÁMITE O SERVICIO PRETENDÍA HACER U OBTENER AL MOMENTO EN QUE OCURRIERON LOS HECHOS QUE DENUNCIA ?  </string>

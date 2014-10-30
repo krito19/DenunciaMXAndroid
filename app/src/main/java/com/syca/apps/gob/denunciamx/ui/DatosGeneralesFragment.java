@@ -15,15 +15,21 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.fourmob.datetimepicker.date.DatePickerDialog.OnDateSetListener;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.syca.apps.gob.denunciamx.R;
 import com.syca.apps.gob.denunciamx.data.DenunciaContract;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,10 +37,19 @@ import butterknife.InjectView;
  * create an instance of this fragment.
  *
  */
-public class DatosGeneralesFragment extends Fragment {
+public class DatosGeneralesFragment extends Fragment implements OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
    DenunciaInfo info = new DenunciaInfo();
+
+    public static final String DATEPICKER_TAG = "datepicker";
+    public static final String TIMEPICKER_TAG = "timepicker";
+
+    DatePickerDialog datePickerDialog;
+    TimePickerDialog timePickerDialog;
+    final Calendar calendar = Calendar.getInstance();
+
+
 
 
     public class DenunciaInfo
@@ -56,7 +71,8 @@ public class DatosGeneralesFragment extends Fragment {
     @InjectView(R.id.denuncia_tipo_radio) RadioGroup denuciaTipoAnonima;
     @InjectView(R.id.que_denuncia_edit_text) EditText queDenunciaEditText;
     @InjectView(R.id.donde_denuncia_edit_text) EditText dondeDenunciaEditText;
-    @InjectView(R.id.cuando_denuncia_edit_text) EditText cuandoDenunciaEditText;
+    @InjectView(R.id.cuando_fecha_denuncia_edit_text) EditText fechaDenunciaEditText;
+    @InjectView(R.id.cuando_hora_denuncia_edit_text) EditText horaDenunciaEditText;
     @InjectView(R.id.como_denuncia_edit_text)  EditText comoDenunciaEditText;
     @InjectView(R.id.quienes_denuncia_edit_text) EditText quienesDenunciaEditText;
     @InjectView(R.id.servicio_denuncia_edit_text) EditText servicioDenunciaEditText;
@@ -66,7 +82,8 @@ public class DatosGeneralesFragment extends Fragment {
 
     private static final String KEY_QUE="KEY_QUE";
     private static final String KEY_DONDE="KEY_DONDE";
-    private static final String KEY_CUANDO="KEY_CUANDO";
+    private static final String KEY_FECHA ="KEY_FECHA";
+    private static final String KEY_HORA ="KEY_HORA";
     private static final String KEY_COMO="KEY_COMO";
     private static final String KEY_QUIENES="KEY_QUIENES";
     private static final String KEY_SERVICIO="KEY_SERVICIO";
@@ -107,7 +124,7 @@ public class DatosGeneralesFragment extends Fragment {
                     dependenciaList.add(getDependecia(cursor));
                 }while (cursor.moveToNext());
                 ArrayAdapter<String> dependenciaAdapter =
-                        new ArrayAdapter<String>(getActivity(),android.R.layout.simple_spinner_item, dependenciaList);
+                        new ArrayAdapter<String>(getActivity(),R.layout.dependencia_spinner_item, dependenciaList);
                 dependeciaSpinner.setAdapter(dependenciaAdapter);
             }
         }
@@ -150,6 +167,12 @@ public class DatosGeneralesFragment extends Fragment {
         }
         setRetainInstance(true);
         //TODO:Set in bundle
+
+
+
+        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
     }
 
     @Override
@@ -159,6 +182,21 @@ public class DatosGeneralesFragment extends Fragment {
         View view =inflater.inflate(R.layout.fragment_datos_generales, container, false);
         ButterKnife.inject(this, view);
         DependenciasTask.execute();
+        fechaDenunciaEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickShowDateTimePicker((EditText) v);
+            }
+        });
+
+
+        horaDenunciaEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickShowDateTimePicker((EditText) v);
+            }
+        });
+
         if(null!=savedInstanceState)
             handleInstance(savedInstanceState);
 
@@ -172,9 +210,9 @@ public class DatosGeneralesFragment extends Fragment {
         if(R.id.denuncia_publica_positive== denuciaTipoAnonima.getCheckedRadioButtonId())
             info.isAnonima=true;
         //TODO : get dependencia from spinner
-        //dependeciaSpinner.getSelectedItem()
+        Object selectedItem=  dependeciaSpinner.getSelectedItem();
         info.comoDenuncia=comoDenunciaEditText.getText().toString();
-        info.cuandoDenuncia=cuandoDenunciaEditText.getText().toString();
+        info.cuandoDenuncia=fechaDenunciaEditText.getText().toString() + " " +horaDenunciaEditText.getText().toString();
         info.dondeDenuncia=dondeDenunciaEditText.getText().toString();
         info.quienesDenuncia=quienesDenunciaEditText.getText().toString();
         info.queDenuncia=queDenunciaEditText.getText().toString();
@@ -194,7 +232,9 @@ public class DatosGeneralesFragment extends Fragment {
 
         outState.putString(KEY_DONDE,dondeDenunciaEditText.getText().toString());
 
-        outState.putString(KEY_CUANDO,cuandoDenunciaEditText.getText().toString());
+        outState.putString(KEY_FECHA,fechaDenunciaEditText.getText().toString());
+
+        outState.putString(KEY_HORA,horaDenunciaEditText.getText().toString());
 
         outState.putString(KEY_COMO,comoDenunciaEditText.getText().toString());
 
@@ -213,8 +253,11 @@ public class DatosGeneralesFragment extends Fragment {
         if(savedInstance.containsKey(KEY_DONDE))
         dondeDenunciaEditText.setText(savedInstance.getString(KEY_DONDE));
 
-        if(savedInstance.containsKey(KEY_CUANDO))
-        cuandoDenunciaEditText.setText(savedInstance.getString(KEY_CUANDO));
+        if(savedInstance.containsKey(KEY_FECHA))
+        fechaDenunciaEditText.setText(savedInstance.getString(KEY_FECHA));
+
+        if(savedInstance.containsKey(KEY_HORA))
+        horaDenunciaEditText.setText(savedInstance.getString(KEY_HORA));
 
         if(savedInstance.containsKey(KEY_COMO))
         comoDenunciaEditText.setText(savedInstance.getString(KEY_COMO));
@@ -226,6 +269,62 @@ public class DatosGeneralesFragment extends Fragment {
         servicioDenunciaEditText.setText(savedInstance.getString(KEY_SERVICIO));
 
     }
+
+    public void clickShowDateTimePicker(EditText editText)
+    {
+
+        switch (editText.getId()) {
+            case R.id.cuando_fecha_denuncia_edit_text:
+                DatePickerDialog dpd = (DatePickerDialog) getActivity().getSupportFragmentManager().findFragmentByTag(DATEPICKER_TAG);
+                if (dpd == null) {
+                    datePickerDialog.setYearRange(2013, calendar.get(Calendar.YEAR));
+                    datePickerDialog.show(getActivity().getSupportFragmentManager(), DATEPICKER_TAG);
+                }
+
+                break;
+            case R.id.cuando_hora_denuncia_edit_text:
+                TimePickerDialog tpd = (TimePickerDialog) getActivity().getSupportFragmentManager().findFragmentByTag(TIMEPICKER_TAG);
+                if (tpd == null) {
+                    timePickerDialog.show(getActivity().getSupportFragmentManager(), TIMEPICKER_TAG);
+                }
+
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
+
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR,year);
+        c.set(Calendar.MONTH,month);
+        c.set(Calendar.DAY_OF_MONTH,day);
+
+        Date d = new Date(c.getTimeInMillis());
+
+        fechaDenunciaEditText.setText(getSimpleDateFormat("yyyy/MM/dd",d));
+
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY,hourOfDay);
+        c.set(Calendar.MINUTE,minute);
+        horaDenunciaEditText.setText(getSimpleDateFormat("HH:mm",new Date(c.getTimeInMillis())));
+
+    }
+
+    public String getSimpleDateFormat(String format,Date date)
+    {
+
+        return new SimpleDateFormat(format).format(date);
+    }
+
+
 
 
 }

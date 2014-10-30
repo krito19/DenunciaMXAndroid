@@ -74,6 +74,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_quiero_denunciar_a"
                     android:padding="5dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
                     android:textColor="#fafafa"/>
 
                 <Spinner
@@ -81,7 +83,14 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/spinner_dependencias"
                     android:textColor="#fafafa"
-                    android:padding="5dp">
+                    android:background="@android:color/transparent"
+                    android:popupBackground="@color/verde"
+                    android:spinnerMode="dialog"
+                    android:padding="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:dropDownSelector="@color/verde"
+
+                    >
 
                     </Spinner>
 
@@ -111,26 +120,65 @@
                     android:maxLines="5"
                     android:textColorHint="#fafafa"
                     android:textColor="#fafafa"
-                    android:padding="5dp"
+
                     android:textAppearance="@android:style/TextAppearance.Small"
                     android:background="@drawable/rectangle_edit_text"
                     android:layout_marginBottom="10dp"
                     android:textCursorDrawable="@null"/>
-                <EditText
-                    android:id="@+id/cuando_denuncia_edit_text"
+
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="64dp"
-                    android:hint="@string/title_cuando"
-                    android:isScrollContainer="true"
-                    android:minLines="3"
-                    android:maxLines="5"
-                    android:padding="5dp"
-                    android:textColorHint="#fafafa"
-                    android:textColor="#fafafa"
-                    android:textAppearance="@android:style/TextAppearance.Small"
-                    android:background="@drawable/rectangle_edit_text"
+                    android:orientation="horizontal"
                     android:layout_marginBottom="10dp"
-                    android:textCursorDrawable="@null"/>
+
+                    >
+
+
+                    <EditText
+                        android:id="@+id/cuando_fecha_denuncia_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="64dp"
+                        android:hint="@string/title_cuando_fecha"
+                        android:isScrollContainer="true"
+                        android:minLines="3"
+                        android:maxLines="5"
+                        android:textColorHint="#fafafa"
+                        android:textColor="#fafafa"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:background="@drawable/rectangle_edit_text"
+                        android:textCursorDrawable="@null"
+                        android:padding="5dp"
+                        android:layout_marginRight="2dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+
+                    <EditText
+                        android:id="@+id/cuando_hora_denuncia_edit_text"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="64dp"
+                        android:hint="@string/title_cuando_hora"
+                        android:isScrollContainer="true"
+                        android:minLines="3"
+                        android:maxLines="5"
+                        android:textColorHint="#fafafa"
+                        android:textColor="#fafafa"
+                        android:textAppearance="@android:style/TextAppearance.Small"
+                        android:background="@drawable/rectangle_edit_text"
+                        android:textCursorDrawable="@null"
+                        android:padding="5dp"
+                        android:layout_marginLeft="2dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"/>
+
+                    </LinearLayout>
+
                 <EditText
                     android:id="@+id/como_denuncia_edit_text"
                     android:layout_width="fill_parent"

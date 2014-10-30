@@ -169,6 +169,8 @@ public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunc
         public void onTabChanged(String tabId) {
             int position = mTabHost.getCurrentTab();
             mViewPager.setCurrentItem(position);
+
+
         }
 
         @Override
@@ -187,6 +189,7 @@ public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunc
             widget.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             mTabHost.setCurrentTab(position);
             widget.setDescendantFocusability(oldFocusability);
+
         }
 
         @Override
