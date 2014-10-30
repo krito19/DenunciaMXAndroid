@@ -14,8 +14,30 @@
 
         <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="34dp"
+            android:gravity="center_horizontal"
+            android:background="@color/verde"
+            android:layout_margin="5dp"
+            >
+            <TextView
+
+                android:layout_width="fill_parent"
+                android:layout_height="34dp"
+                android:text="@string/title_evidencia_recopilada"
+                android:layout_margin="5dp"
+                android:textColor="#fafafa"
+                android:textColorHint="#fafafa"
+                android:layout_span="9"
+                android:gravity="center"
+                android:textSize="12dp"
+
+                />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="64dp"
             android:gravity="center"
             android:background="@drawable/border_bottom_white">
             <ImageButton
@@ -50,8 +72,7 @@
         </TableRow>
         <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="64dp"
             android:gravity="center"
             android:background="@drawable/border_bottom_white">
             <ImageButton
@@ -85,8 +106,7 @@
         </TableRow>
         <TableRow
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="64dp"
             android:gravity="center"
             android:background="@drawable/border_bottom_white">
             <ImageButton

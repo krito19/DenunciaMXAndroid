@@ -17,11 +17,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
-    <!--Evidencia Permission-->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
+    <!-- Evidencia Permission -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.RECORD_VIDEO" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
@@ -50,7 +49,7 @@
         <uses-library android:name="com.google.android.maps" />
 
         <activity
-            android:name=".ui.DenunciaMainActivity"
+            android:name="com.syca.apps.gob.denunciamx.ui.DenunciaMainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan" >
             <intent-filter>
@@ -60,58 +59,61 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.SingleFragmentActivity"
+            android:name="com.syca.apps.gob.denunciamx.ui.SingleFragmentActivity"
             android:exported="false"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".ui.DenunciarActivity"
+            android:name="com.syca.apps.gob.denunciamx.ui.DenunciarActivity"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
-            android:parentActivityName=".ui.DenunciaMainActivity" >
+            android:parentActivityName="com.syca.apps.gob.denunciamx.ui.DenunciaMainActivity" >
         </activity>
         <activity
-            android:name=".ui.DenunciaFragmentPager"
+            android:name="com.syca.apps.gob.denunciamx.ui.DenunciaFragmentPager"
             android:exported="false"
             android:label="@string/title_denunicar_action_bar"
-            android:parentActivityName=".ui.DenunciaMainActivity"
+            android:parentActivityName="com.syca.apps.gob.denunciamx.ui.DenunciaMainActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name=".ui.DenunciarTabsPager"
-            android:exported="false"
-            android:label="@string/title_denunicar_action_bar"
-            android:screenOrientation="portrait"
+            android:name="com.syca.apps.gob.denunciamx.ui.DenunciarTabsPager"
             android:configChanges="orientation|keyboardHidden"
-            android:parentActivityName=".ui.DenunciaMainActivity"
+            android:exported="false"
+            android:label="@string/title_denunicar_action_bar"
+            android:parentActivityName="com.syca.apps.gob.denunciamx.ui.DenunciaMainActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity
-            android:name=".ui.ListDenunciaActivity"
+            android:name="com.syca.apps.gob.denunciamx.ui.ListDenunciaActivity"
             android:exported="false"
             android:label="@string/title_mis_denuncias"
-            android:parentActivityName=".ui.DenunciaMainActivity" >
+            android:parentActivityName="com.syca.apps.gob.denunciamx.ui.DenunciaMainActivity" >
         </activity>
-
         <activity
-            android:name=".ui.SoundRecordActivity"
+            android:name="com.syca.apps.gob.denunciamx.ui.SoundRecordActivity"
             android:exported="false"
             android:label="@string/title_sound_record_activity"
-            android:parentActivityName=".ui.DenunciarTabsPager"
-            android:theme="@style/Theme.Transparent">
-
+            android:parentActivityName="com.syca.apps.gob.denunciamx.ui.DenunciarTabsPager"
+            android:theme="@style/Theme.Transparent" >
         </activity>
 
         <service
             android:name="com.syca.apps.gob.denunciamx.service.DenunciaService"
-            android:process=":denunciaservice"
-            android:enabled="true">
+            android:enabled="true"
+            android:process=":denunciaservice" >
         </service>
 
         <provider
+            android:name="com.syca.apps.gob.denunciamx.data.DenunciaProvider"
             android:authorities="@string/content_authority"
-            android:enabled="true"
-            android:name="com.syca.apps.gob.denunciamx.data.DenunciaProvider"></provider>
+            android:enabled="true" />
+
+        <service
+            android:name="com.syca.apps.gob.denunciamx.sync.DenunciaRestService"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

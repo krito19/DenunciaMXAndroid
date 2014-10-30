@@ -20,7 +20,7 @@ public class EstatusDenuncia {
             case  DENUNCIA_POR_ENVIAR:
                 return "Denuncia en proceso de envío";
             case  DENUNCIA_ENVIADA:
-                return "Denuncia en enviada";
+                return "Denuncia enviada";
             case  DENUNCIA_RECIBIDA:
                 return "Denuncia recibida por la SFP";
             case  DENUNCIA_EN_PROCESO:

@@ -7,38 +7,55 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="44dp"
         android:orientation="horizontal"
-        android:background="#555">
+        android:background="@color/verde"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="10dp"
+
+        >
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="44dp"
+            android:textSize="12dp"
+            android:gravity="center"
+            android:text="@string/title_ubicacion_de_los_hechos"
+            android:textColor="#fafafa"
+            android:textColorHint="#fafafa"
+
+            android:background="@color/verde"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="54dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        >
         
         <Button
-            android:layout_width="0dp"
+            android:layout_width="154dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
             android:text="UBICACIÓN ACTUAL"
+            android:minLines="2"
+            android:textSize="16dp"
             android:background="@color/morado"
             android:textColor="#fff"/>
-        <Button
-            android:layout_width="0dp"
+        <EditText
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="ENVIAR"
-            android:background="@color/morado"
-            android:textColor="#fff"/>
+            android:hint="@string/buscar_ubicacion"
+            android:background="@drawable/round_corner_verde"
+            android:textStyle="bold"
+            android:textColor="@color/verde"
+            android:textColorHint="@color/verde"/>
         </LinearLayout>
     <LinearLayout
     android:layout_width="fill_parent"
-    android:layout_height="0dp"
-    android:layout_weight="8"
+    android:layout_height="fill_parent"
     android:orientation="horizontal">
 
 
