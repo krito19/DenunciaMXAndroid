@@ -37,7 +37,7 @@ public class DenunciaPersistenceHelper {
         contentResolver = context.getContentResolver();
     }
 
-    public void persistNewDenuncia(DatosGeneralesFragment.DenunciaInfo info,EvidenciaFragment.MediaInfoFile evidenciaFiles)
+    public String persistNewDenuncia(DatosGeneralesFragment.DenunciaInfo info,EvidenciaFragment.MediaInfoFile evidenciaFiles)
     {
 
         Date todayDate = new Date();
@@ -51,6 +51,8 @@ public class DenunciaPersistenceHelper {
         insertEvidencias(idDenuncia,todayDate,evidenciaFiles);
 
         insertHistoria(idDenuncia,today,EstatusDenuncia.DENUNCIA_POR_ENVIAR,"Su denuncia esta por enviar");
+
+        return idDenuncia;
 
     }
 

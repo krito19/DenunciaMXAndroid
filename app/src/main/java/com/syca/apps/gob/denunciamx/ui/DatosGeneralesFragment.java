@@ -181,7 +181,17 @@ public class DatosGeneralesFragment extends Fragment implements OnDateSetListene
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_datos_generales, container, false);
         ButterKnife.inject(this, view);
-        DependenciasTask.execute();
+        if(DependenciasTask.getStatus()== AsyncTask.Status.RUNNING) {
+
+        }
+        if(DependenciasTask.getStatus()== AsyncTask.Status.PENDING)
+        {
+            DependenciasTask.execute();
+        }
+        if(DependenciasTask.getStatus()== AsyncTask.Status.FINISHED)
+        {
+
+        }
         fechaDenunciaEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

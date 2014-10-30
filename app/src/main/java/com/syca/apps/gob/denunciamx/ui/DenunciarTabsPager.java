@@ -13,6 +13,7 @@ import android.widget.TabWidget;
 
 import com.syca.apps.gob.denunciamx.R;
 import com.syca.apps.gob.denunciamx.data.DenunciaPersistenceHelper;
+import com.syca.apps.gob.denunciamx.sync.DenunciaRestService;
 
 import java.util.ArrayList;
 
@@ -70,14 +71,17 @@ public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunc
         EvidenciaFragment.MediaInfoFile evidencias =
                 ((EvidenciaFragment)getSupportFragmentManager().getFragments().get(1)).getEvidenciaFiles();
 
+        //TODO:Validate denuncia
         //if(!isValidDenuncia(info, evidencias))
         //    return;
 
         DenunciaPersistenceHelper persistenceHelper = new DenunciaPersistenceHelper(this);
 
-        persistenceHelper.persistNewDenuncia(info,evidencias);
+        String idDenuncia = persistenceHelper.persistNewDenuncia(info,evidencias);
 
         //TODO: send to the indicate activity
+        DenunciaRestService.startActionPostDenuncia(this,idDenuncia);
+
         finish();
 
     }

@@ -112,7 +112,8 @@
 
         <service
             android:name="com.syca.apps.gob.denunciamx.sync.DenunciaRestService"
-            android:exported="false" >
+            android:exported="false"
+            android:enabled="true">
         </service>
     </application>
 

@@ -130,7 +130,9 @@ public class EvidenciaFragment extends Fragment {
 
     public EvidenciaFragment() {
         // Required empty public constructor
-        evidenciaActionMode = new EvidenciaActionMode();
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
+            evidenciaActionMode = new EvidenciaActionMode();
+
         photosKeyList = new HashMap<Integer, Uri>();
         videoKeyList= new HashMap<Integer, Uri>();
         audioKeyList= new HashMap<Integer, Uri>();
