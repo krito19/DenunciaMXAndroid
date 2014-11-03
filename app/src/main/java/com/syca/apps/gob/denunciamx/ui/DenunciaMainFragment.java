@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.syca.apps.gob.denunciamx.R;
+import com.syca.apps.gob.denunciamx.sync.GCMRegisterer;
+import com.syca.apps.gob.denunciamx.sync.RegistrationFile;
 import com.syca.apps.gob.denunciamx.utils.UtilIntents;
 
 import butterknife.ButterKnife;
@@ -25,6 +27,13 @@ public class DenunciaMainFragment extends Fragment {
     {
         DenunciaMainFragment fragment = new DenunciaMainFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(!isRegister())
+            registerDevice();
     }
 
     @Override
@@ -53,6 +62,20 @@ public class DenunciaMainFragment extends Fragment {
         startActivity(UtilIntents.makeIntentListDenuncia(getActivity()));
     }
 
+
+    private Boolean isRegister()
+    {
+        RegistrationFile  r = new RegistrationFile(getActivity());
+        boolean b =  r.isRegister();
+        return b;
+    }
+
+    private void registerDevice()
+    {
+        GCMRegisterer registerer = new GCMRegisterer(getActivity());
+
+        registerer.register();
+    }
 
 
 

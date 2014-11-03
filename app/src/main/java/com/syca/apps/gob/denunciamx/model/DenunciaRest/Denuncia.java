@@ -6,26 +6,26 @@ import java.util.ArrayList;
  * Created by JARP on 10/30/14.
  */
 public class Denuncia {
+
     String id;
     String idDenunciaSPF;
     String token;
-    boolean isAnonima;
+    boolean anonima;
     String mail;
     String titulo;
     int idDependencia;
     int idEstadoDenuncia;
     String fechaRegistro;
     Evidencia evidencia;
-    public Evidencia getEvidencia() {
-        return evidencia;
-    }
-    public void setEvidencia(Evidencia evidencia) {
-        this.evidencia = evidencia;
-    }
+
+
+
     Ubicacion ubicacion;
+
     public Denuncia(){}
+
     public Denuncia( String id, String idDenunciaSPF,String token,
-                     boolean isAnonima, String mail, String titulo,
+                     boolean anonima, String mail, String titulo,
                      int idDependencia, int idEstadoDenuncia,String fechaRegistro,
                      Evidencia evidencia,
                      Ubicacion ubicacion){
@@ -33,7 +33,7 @@ public class Denuncia {
         this.id=id;
         this.idDenunciaSPF = idDenunciaSPF;
         this.token=token;
-        this.isAnonima=isAnonima;
+        this.anonima = anonima;
         this.mail=mail;
         this.titulo=titulo;
         this.idDependencia=idDependencia;
@@ -42,48 +42,56 @@ public class Denuncia {
         this.evidencia=evidencia;
         this.ubicacion=ubicacion;
     }
+
     public String getId() {
         return id;
     }
     public void setId(String id) {
         this.id = id;
     }
+
     public String getIdDenunciaSPF() {
         return idDenunciaSPF;
     }
     public void setIdDenunciaSPF(String idDenunciaSPF) {
         this.idDenunciaSPF = idDenunciaSPF;
     }
+
     public String getToken() {
         return token;
     }
     public void setToken(String token) {
         this.token = token;
     }
-    public boolean isAnonima() {
-        return isAnonima;
+
+    public boolean getAnonima() {
+        return anonima;
     }
-    public void setAnonima(boolean isAnonima) {
-        this.isAnonima = isAnonima;
+    public void setAnonima(boolean anonima) {
+        this.anonima = anonima;
     }
+
     public String getMail() {
         return mail;
     }
     public void setMail(String mail) {
         this.mail = mail;
     }
+
     public String getTitulo() {
         return titulo;
     }
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
     public int getIdDependencia() {
         return idDependencia;
     }
     public void setIdDependencia(int idDependencia) {
         this.idDependencia = idDependencia;
     }
+
     public int getIdEstadoDenuncia() {
         return idEstadoDenuncia;
     }
@@ -96,11 +104,21 @@ public class Denuncia {
     public void setFechaRegistro(String fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
     }
+
     public Ubicacion getUbicacion() {
         return ubicacion;
     }
+
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
+    }
+
+    public Evidencia getEvidencia() {
+        return evidencia;
+    }
+
+    public void setEvidencia(Evidencia evidencia) {
+        this.evidencia = evidencia;
     }
 
     public static class DenunciaBuilder

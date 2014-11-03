@@ -6,17 +6,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import com.syca.apps.gob.denunciamx.data.DenunciaContract;
 import com.syca.apps.gob.denunciamx.model.DenunciaRest.Audio;
 import com.syca.apps.gob.denunciamx.model.DenunciaRest.Denuncia;
 import com.syca.apps.gob.denunciamx.model.DenunciaRest.Foto;
+import com.syca.apps.gob.denunciamx.model.DenunciaRest.Ubicacion;
 import com.syca.apps.gob.denunciamx.model.DenunciaRest.VideoEvidencia;
 import com.syca.apps.gob.denunciamx.model.DenunciaTableItem;
 import com.syca.apps.gob.denunciamx.model.EvidenciaMediaType;
 import com.syca.apps.gob.denunciamx.model.EvidenciaTableItem;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.POST;
 
@@ -33,13 +38,11 @@ public class DenunciaRestService extends IntentService {
 
     // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_FOO = "com.syca.apps.gob.denunciamx.sync.action.FOO";
-    private static final String ACTION_BAZ = "com.syca.apps.gob.denunciamx.sync.action.BAZ";
+    private static final String ACTION_DEVICE = "com.syca.apps.gob.denunciamx.sync.action.POST_DEVICE";
     private static final String ACTION_POST_DENUNCIA = "com.syca.apps.gob.denunciamx.sync.action.POST_DENUNCIA";
 
     // TODO: Rename parameters
-    private static final String EXTRA_PARAM1 = "com.syca.apps.gob.denunciamx.sync.extra.PARAM1";
-    private static final String EXTRA_PARAM2 = "com.syca.apps.gob.denunciamx.sync.extra.PARAM2";
+    private static final String EXTRA_GMC_TOKEN = "com.syca.apps.gob.denunciamx.sync.extra.GCM_TOKEN";
     private static final String EXTRA_ID_DENUNCIA = "com.syca.apps.gob.denunciamx.sync.extra.ID_DENUNCIA";
 
     /**
@@ -49,32 +52,15 @@ public class DenunciaRestService extends IntentService {
      * @see IntentService
      */
     // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
+    public static void startActionRegisterDispositivo(Context context, String gmcToken) {
         Intent intent = new Intent(context, DenunciaRestService.class);
-        intent.setAction(ACTION_FOO);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
+        intent.setAction(ACTION_DEVICE);
+        intent.putExtra(EXTRA_GMC_TOKEN, gmcToken);
         context.startService(intent);
     }
 
     /**
-     * Starts this service to perform action Baz with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionBaz(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, DenunciaRestService.class);
-        intent.setAction(ACTION_BAZ);
-        intent.putExtra(EXTRA_PARAM1, param1);
-        intent.putExtra(EXTRA_PARAM2, param2);
-        context.startService(intent);
-    }
-
-
-    /**
-     * Starts this service to perform action Baz with the given parameters. If
+     * Starts this service to perform action Post Denuncia with the given parameters. If
      * the service is already performing a task this action will be queued.
      *
      * @see IntentService
@@ -97,14 +83,11 @@ public class DenunciaRestService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (ACTION_FOO.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionFoo(param1, param2);
-            } else if (ACTION_BAZ.equals(action)) {
-                final String param1 = intent.getStringExtra(EXTRA_PARAM1);
-                final String param2 = intent.getStringExtra(EXTRA_PARAM2);
-                handleActionBaz(param1, param2);
+            if (ACTION_DEVICE.equals(action)) {
+                final String token = intent.getStringExtra(EXTRA_GMC_TOKEN);
+                Dispositivo d = new Dispositivo(token,2);
+                handleRegisterDispositivo(d);
+
             }
             else if(ACTION_POST_DENUNCIA.equals(action)) {
                 final String idDenuncia = intent.getStringExtra(EXTRA_ID_DENUNCIA);
@@ -113,28 +96,14 @@ public class DenunciaRestService extends IntentService {
         }
     }
 
-    /**
-     * Handle action Foo in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionFoo(String param1, String param2) {
-        // TODO: Handle action Foo
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    /**
-     * Handle action Baz in the provided background thread with the provided
-     * parameters.
-     */
-    private void handleActionBaz(String param1, String param2) {
-        // TODO: Handle action Baz
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
     private interface DenunciaRest
     {
         @POST("/denuncia")
-        void newDenuncia(@Body Denuncia denuncia);
+        void newDenuncia(@Body Denuncia denuncia , Callback<Denuncia> cb);
+
+        @POST("/dispositivo")
+        void registerDispositivo(@Body Dispositivo dispositivo,Callback<Dispositivo>dispositivoCallback);
     }
 
     private void handleUploadDenuncia(String idDenuncia)
@@ -142,6 +111,12 @@ public class DenunciaRestService extends IntentService {
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                                                 .setEndpoint(API_URL)
+                                                .setLogLevel(RestAdapter.LogLevel.FULL)
+                                                .setLog(new RestAdapter.Log() {
+                                                        public void log(String msg) {
+                                                            Log.i("retrofit", msg);
+                                                        }
+                                                    })
                                                 .build();
 
         //By now we will make sync
@@ -149,9 +124,41 @@ public class DenunciaRestService extends IntentService {
 
         Denuncia denuncia = getDenunciaFromResolver(idDenuncia);
 
-        denunciaApi.newDenuncia(denuncia);
+        denunciaApi.newDenuncia(denuncia, (Callback<Denuncia>) callback);
 
     }
+
+    private void handleRegisterDispositivo(Dispositivo d)
+    {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(API_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLog(new RestAdapter.Log() {
+                    public void log(String msg) {
+                        Log.i("retrofit", msg);
+                    }
+                })
+                .build();
+
+        //Register device
+        DenunciaRest denunciaApi =restAdapter.create(DenunciaRest.class);
+        denunciaApi.registerDispositivo(d, (Callback<Dispositivo>) callback);
+    }
+
+    Callback<?> callback = new Callback<Object>() {
+        @Override
+        public void success(Object o, Response response) {
+
+            String stop=response.getReason();
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            String stop=error.getMessage();
+
+        }
+    };
+
 
     private Denuncia getDenunciaFromResolver(String idDenuncia)
     {
@@ -176,7 +183,6 @@ public class DenunciaRestService extends IntentService {
         //Get evidencias
         cursor = contentResolver.query(denunciaUri,null,null,null,null);
         cursor.moveToFirst();
-        int idx = -1;
         EvidenciaTableItem evidenciaItem ;
         do {
 
@@ -184,7 +190,7 @@ public class DenunciaRestService extends IntentService {
 
             if(evidenciaItem.evidenciaType.equals(String.valueOf(EvidenciaMediaType.AUDIO)))
             {
-                builderDenuncia.addAudio(new Audio(evidenciaItem.evidenciaFullPath,evidenciaItem.s3Path));
+                builderDenuncia.addAudio(new Audio(evidenciaItem.evidenciaFullPath, evidenciaItem.s3Path));
             }
             else if(evidenciaItem.evidenciaType.equals(String.valueOf(EvidenciaMediaType.VIDEO)))
             {
@@ -199,10 +205,46 @@ public class DenunciaRestService extends IntentService {
 
         cursor.close();
 
+        builderDenuncia.addUbicacion(new Ubicacion(5.5f,6.6f));
+
         return builderDenuncia.buildDenuncia();
 
     }
 
+
+    class Dispositivo
+    {
+        private String token;
+        private int os;
+
+        public Dispositivo() {
+            os=2;
+        }
+
+        public Dispositivo(String token, int os) {
+            super();
+            this.token = token;
+            this.os = 2;
+
+        }
+
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public int getOs() {
+            return os;
+        }
+
+        public void setOs(int os) {
+            this.os = os;
+        }
+    }
 
 
 }
