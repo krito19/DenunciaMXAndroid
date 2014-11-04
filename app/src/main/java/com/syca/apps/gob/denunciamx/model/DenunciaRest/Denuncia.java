@@ -166,7 +166,7 @@ public class Denuncia {
         public DenunciaBuilder addVideo(VideoEvidencia video)
         {
             if(null==evidencia) evidencia = new Evidencia();
-            if(null==evidencia.fotos) evidencia.videos = new ArrayList<VideoEvidencia>();
+            if(null==evidencia.videos) evidencia.videos = new ArrayList<VideoEvidencia>();
             evidencia.videos.add(video);
             return this;
         }

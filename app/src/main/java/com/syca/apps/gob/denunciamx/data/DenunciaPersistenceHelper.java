@@ -11,6 +11,7 @@ import com.syca.apps.gob.denunciamx.model.Estatus_S3;
 import com.syca.apps.gob.denunciamx.model.EvidenciaFileModel;
 import com.syca.apps.gob.denunciamx.model.EvidenciaHechoPreguntas;
 import com.syca.apps.gob.denunciamx.model.EvidenciaMediaType;
+import com.syca.apps.gob.denunciamx.sync.RegistrationFile;
 import com.syca.apps.gob.denunciamx.ui.DatosGeneralesFragment;
 import com.syca.apps.gob.denunciamx.ui.EvidenciaFragment;
 import com.syca.apps.gob.denunciamx.utils.MediaStoreSyca;
@@ -67,10 +68,15 @@ public class DenunciaPersistenceHelper {
 
     }
 
+    private String getToken()
+    {
+        return new RegistrationFile(mContext).getTokenKey();
+    }
+
     private void insertDenunciaInfo(DatosGeneralesFragment.DenunciaInfo info, String idDenuncia, String today)
     {
         ContentValues cvInfoDenuncia= createDenunciaInfoValues(info.isAnonima?1:0,
-                "NoToken",
+                getToken(),
                 EstatusDenuncia.DENUNCIA_POR_ENVIAR,
                 today,
                 today,
@@ -180,7 +186,7 @@ public class DenunciaPersistenceHelper {
         cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_ID_DEPENDENCIA,0);
         cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_ID_INTERNO,idDenuncia);
         cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_ID_SPF,idSPF);
-        cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_TITULO,"Some nice title");
+        cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_TITULO,"Denuncia " + fechaActualizacion);
         cv.put(DenunciaContract.DenunciaInfoEntry.COLUMN_TOKEN,token);
         return cv;
     }

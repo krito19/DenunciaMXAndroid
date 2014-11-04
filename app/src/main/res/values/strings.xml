@@ -44,9 +44,12 @@
     <string name="title_evidencia_recopilada">EVIDENCIA RECOPILADA</string>
     <string name="title_ubicacion_de_los_hechos">UBICACIÓN DE LOS HECHOS</string>
     <string name="buscar_ubicacion">BUSCAR UBICACION</string>
+
+
+    <!--Registration-->
     <string name="gcm_project_number"></string>
     <string name="preference_file">denuncia_prefrerence_file</string>
-    <string name="is_register_in_service"></string>
+    <string name="is_register_in_service"></string><!--this should be empty to register-->
     <string name="registerToken">register_token</string>
 
 

@@ -1,8 +1,10 @@
 package com.syca.apps.gob.denunciamx.service;
 
 import android.app.Service;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -14,10 +16,13 @@ import android.util.Log;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.syca.apps.gob.denunciamx.data.DenunciaContract;
 import com.syca.apps.gob.denunciamx.model.EvidenciaFileModel;
 import com.syca.apps.gob.denunciamx.utils.MediaStoreSyca;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DenunciaService extends Service {
@@ -38,6 +43,7 @@ public class DenunciaService extends Service {
 
     private final static String EXTRA_URI_FILE="Denuncia_Uri_file";
     private final static String EXTRA_FILE_TYPE="Denuncia_Type_file";
+    private final static String EXTRA_PARAM_DENUNCIA_ID="Denuncia_ID";
 
     @Override
     public void onCreate() {
@@ -82,22 +88,18 @@ public class DenunciaService extends Service {
      * Hook method called back to shutdown the Looper.
      */
     public void onDestroy() {
-        //mServiceLooper.quit();
+        mServiceLooper.quit();
     }
 
 
     /*
         Factory Method to make the correct Intent
      */
-    public static Intent makeServiceIntent(Context context, Uri uri,String typeFile,Handler uploadHandler)
+    public static Intent makeServiceIntent(Context context,String idDenuncia,Handler uploadHandler)
     {
         Intent serviceIntent = new Intent(context,DenunciaService.class);
 
-        //This is the uri file that we need to upload
-        serviceIntent.setData(uri);
-
-        //Type File
-        serviceIntent.putExtra(EXTRA_FILE_TYPE,typeFile);
+        serviceIntent.putExtra(EXTRA_PARAM_DENUNCIA_ID,idDenuncia);
 
         //TODO: uploadHandler needs to be set??? right now no 'cause we'll bind to get the progress
 
@@ -121,29 +123,40 @@ public class DenunciaService extends Service {
         public void handleMessage(Message msg) {
 
             Log.d(TAG,"onHandle");
-            uploadFile(msg);
+            uploadFiles(msg);
         }
 
-        private void uploadFile(Message msg) {
+        private void uploadFiles(Message msg) {
 
             Intent intent = (Intent) msg.obj;
 
-            Uri uriUploadFile = intent.getData();
+            String idDenuncia = intent.getStringExtra(EXTRA_PARAM_DENUNCIA_ID);
 
-            String fileType = intent.getStringExtra(EXTRA_FILE_TYPE);
+            ContentResolver cr = getContentResolver();
 
-            EvidenciaFileModel evidencia =null;
-            try {
 
-                evidencia = new EvidenciaFileModel(UUID.randomUUID(),new File(uriUploadFile.getPath()),fileType);
+            Uri filesUri = DenunciaContract.DenunciaEvidenciaEntry.buildDenunciaWithIdInternoUri(idDenuncia);
 
-            } catch (Exception e) {
-                Log.e(TAG,"Error al crear modelo evidencia");
+            Cursor cursor = cr.query(filesUri, null, null, null, null);
+
+
+            List<EvidenciaFileModel> evidencias = new ArrayList<EvidenciaFileModel>();
+
+            if(cursor.moveToFirst())
+            {
+
+                do {
+                    evidencias.add(getFile(cursor));
+                }while (cursor.moveToNext());
+
             }
-            Log.d(TAG,"Despues de crear objeto");
+
+            cursor.close();
 
 
-            uploadToAmazon(evidencia,uriUploadFile);
+            for (EvidenciaFileModel evidencia : evidencias   ) {
+                uploadToAmazon(evidencia, evidencia.uriEvidenciaFile,idDenuncia);
+            }
 
             stopSelf(msg.arg1);
 
@@ -157,7 +170,7 @@ public class DenunciaService extends Service {
             return  message;
         }
 
-        private void uploadToAmazon(EvidenciaFileModel model, Uri uri)
+        private void uploadToAmazon(EvidenciaFileModel model, Uri uri,String idDenuncia)
         {
 
             Log.d(TAG,"onSend");
@@ -167,7 +180,9 @@ public class DenunciaService extends Service {
                 s3Client.createBucket(DENUNCIA_BUCKET);
 
             //(String bucketName, String key, File file)
-            PutObjectRequest por = new PutObjectRequest( DENUNCIA_BUCKET, MediaStoreSyca.getAmazonStorageS3Id(model), new File(uri.getPath()));
+            PutObjectRequest por = new PutObjectRequest( DENUNCIA_BUCKET,
+                                                        idDenuncia + "/" +
+                                                        MediaStoreSyca.getAmazonStorageS3Id(model), new File(uri.getPath()));
             por.setMetadata(MediaStoreSyca.getObjectMetadata(model));
 
             s3Client.putObject( por );
@@ -176,7 +191,35 @@ public class DenunciaService extends Service {
 
         }
 
+        public EvidenciaFileModel getFile(Cursor cursor)
+        {
 
+            int idxFullPath= cursor.getColumnIndex(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_FULL_PATH);
+            int idxType= cursor.getColumnIndex(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_TYPE);
+            int idxUri= cursor.getColumnIndex(DenunciaContract.DenunciaEvidenciaEntry.COLUMN_URI);
+
+            String fullPath = cursor.getString(idxFullPath);
+            String type = cursor.getString(idxType);
+
+            if(type.equals("1"))
+                type="VIDEO";
+            if(type.equals("2"))
+                type="FOTO";
+            if(type.equals("3"))
+                type="VIDEO";
+            String uriString = cursor.getString(idxUri);
+
+            Uri uriUploadFile = Uri.parse(uriString);
+
+            try {
+                return new EvidenciaFileModel(UUID.randomUUID(),new File(uriUploadFile.getPath()),type);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return  null;
+            }
+
+
+        }
 
 
 

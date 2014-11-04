@@ -1,6 +1,7 @@
 package com.syca.apps.gob.denunciamx.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -13,6 +14,7 @@ import android.widget.TabWidget;
 
 import com.syca.apps.gob.denunciamx.R;
 import com.syca.apps.gob.denunciamx.data.DenunciaPersistenceHelper;
+import com.syca.apps.gob.denunciamx.service.DenunciaService;
 import com.syca.apps.gob.denunciamx.sync.DenunciaRestService;
 
 import java.util.ArrayList;
@@ -80,7 +82,13 @@ public class DenunciarTabsPager extends FragmentActivity implements EnviarDenunc
         String idDenuncia = persistenceHelper.persistNewDenuncia(info,evidencias);
 
         //TODO: send to the indicate activity
+        //Send to Elastic bean
         DenunciaRestService.startActionPostDenuncia(this,idDenuncia);
+
+        //Send evidencias to S3
+        Intent serviceIntent = DenunciaService.makeServiceIntent(this,idDenuncia,null);
+
+        startService(serviceIntent);
 
         finish();
 

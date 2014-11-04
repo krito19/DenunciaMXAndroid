@@ -121,9 +121,8 @@
                     android:minLines="3"
                     android:maxLines="5"
                     android:textColorHint="#fafafa"
-                    android:textColor="#fafafa"
-
                     android:textAppearance="@android:style/TextAppearance.Small"
+                    android:textColor="#fafafa"
                     android:background="@drawable/rectangle_edit_text"
                     android:layout_marginBottom="10dp"
                     android:textCursorDrawable="@null"/>

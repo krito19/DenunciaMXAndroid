@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.syca.apps.gob.denunciamx.R;
-import com.syca.apps.gob.denunciamx.service.DenunciaService;
 import com.syca.apps.gob.denunciamx.utils.MediaStoreSyca;
 import com.syca.apps.gob.denunciamx.utils.PictureUtils;
 import com.syca.apps.gob.denunciamx.utils.UIUtils;
@@ -625,16 +624,6 @@ public class EvidenciaFragment extends Fragment {
         });
 
     }
-
-    @OnClick(R.id.upload)
-    public void uploadSingleFile()
-    {
-        Intent serviceIntent = DenunciaService.makeServiceIntent(mContext,Uri.fromFile(mPhotoFile),"Foto",null);
-
-        ((Activity)mContext).startService(serviceIntent);
-
-    }
-
 
     public MediaInfoFile getEvidenciaFiles()
     {
